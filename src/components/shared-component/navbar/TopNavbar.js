@@ -42,9 +42,9 @@ export default function TopNavbar() {
             <div className='hidden lg:block'>
               <SearchInput />
             </div>
-            {/* <Link href='/profile'>
-            <CgProfile className='hidden lg:block cursor-pointer hover:text-primary smooth text-2xl' />
-          </Link> */}
+            <Link href='/profile'>
+              <CgProfile className='hidden lg:block cursor-pointer hover:text-primary smooth text-2xl' />
+            </Link>
             <Link
               href='/signin'
               className='hidden lg:block btn-primary whitespace-nowrap'
