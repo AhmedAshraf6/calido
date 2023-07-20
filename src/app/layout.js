@@ -7,6 +7,7 @@ import Navbar from '@/components/shared-component/navbar/Navbar';
 import Footer from '@/components/shared-component/Footer';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import SearchInput from '@/components/shared-component/navbar/SearchInput';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata = {
@@ -20,6 +21,9 @@ export default function RootLayout({ children }) {
       <body className={inter.className}>
         <MainProvider>
           <TopNavbar />
+          <div className='container my-3 lg:hidden'>
+            <SearchInput />
+          </div>
           <Navbar />
           {/* Responsive Navbar */}
           <div>
