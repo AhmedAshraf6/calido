@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import React from 'react';
 
-export default function page() {
+export default function SignUp() {
   return (
     <div className='flex  flex-1 flex-col justify-center px-3 py-12 lg:px-8'>
       <div className='container'>

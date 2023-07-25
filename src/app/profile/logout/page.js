@@ -2,8 +2,11 @@
 import HeroLanding from '@/components/shared-component/HeroLandingWithoutImage';
 import ProfileLinksContainer from '@/components/profile/ProfileLinksContainer';
 import React from 'react';
+import Cookies from 'js-cookie';
 
 export default function page() {
+  Cookies.remove('calidoUser');
+
   return (
     <>
       <HeroLanding title='My Account' />

@@ -6,8 +6,10 @@ import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 import { toast } from 'react-toastify';
 import Cookies from 'js-cookie';
+import { useMainContext } from '@/contexts/MainContext';
 
-export default function page() {
+export default function SignIn() {
+  const { AddUser } = useMainContext();
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const [data, setData] = useState({
@@ -33,6 +35,7 @@ export default function page() {
         expires: 7,
         secure: true,
       });
+      AddUser(response?.data);
       toast.success('Login success');
       router.push('/profile');
     } catch (error) {
