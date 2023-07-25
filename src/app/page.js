@@ -3,8 +3,27 @@ import React from 'react';
 
 import Sale from '@/components/home/Sale';
 import Item from '@/components/shared-component/Item';
+import UserLocation from '@/components/shared-component/UserLocation';
+import { BaseUrl } from '@/util/constants';
+import { toast } from 'react-toastify';
+// import geoip from 'geoip-lite';
+async function getData() {
+  const res = await fetch(`${BaseUrl}/products`);
+  // The return value is *not* serialized
+  // You can return Date, Map, Set, etc.
 
-export default function Home() {
+  // Recommendation: handle errors
+  if (!res.ok) {
+    // This will activate the closest `error.js` Error Boundary
+    toast.error('error happen');
+  }
+
+  return res.json();
+}
+
+export default async function Home() {
+  const data = await getData();
+  console.log(data);
   return (
     <div>
       <Slider />
@@ -24,6 +43,7 @@ export default function Home() {
       </div>
       {/* Sale */}
       <Sale />
+      <UserLocation />
     </div>
   );
 }

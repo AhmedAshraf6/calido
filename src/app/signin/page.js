@@ -1,7 +1,55 @@
+'use client';
+import customFetch from '@/util/axios';
+import { addUserToLocalStorage } from '@/util/localstorage';
 import Link from 'next/link';
-import React from 'react';
+import { useRouter } from 'next/navigation';
+import React, { useState } from 'react';
+import { toast } from 'react-toastify';
+import Cookies from 'js-cookie';
 
 export default function page() {
+  const [loading, setLoading] = useState(false);
+  const router = useRouter();
+  const [data, setData] = useState({
+    mail: '',
+    password: '',
+  });
+  const { mail, password } = data;
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!mail || !password) {
+      toast.error('Please Fill Out All Fields');
+      return;
+    }
+    try {
+      setLoading(true);
+      const response = await customFetch.post('/users/login', data, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      console.log(response);
+      Cookies.set('calidoUser', response?.data?.token, {
+        expires: 7,
+        secure: true,
+      });
+      toast.success('Login success');
+      router.push('/profile');
+    } catch (error) {
+      console.log('Login failed', error.message);
+      toast.error(error.message);
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
+    return;
+  };
+  const handleChange = (e) => {
+    const name = e.target.name;
+    const value = e.target.value;
+    setData({ ...data, [name]: value });
+  };
+
   return (
     <div className='flex  flex-1 flex-col justify-center px-3 py-12 lg:px-8'>
       <div className='container'>
@@ -17,7 +65,7 @@ export default function page() {
         </div>
 
         <div className='mt-5 sm:mt-10 sm:mx-auto sm:w-full sm:max-w-sm'>
-          <form className='space-y-6' action='#' method='POST'>
+          <form className='space-y-6' onSubmit={handleSubmit}>
             <div>
               <label
                 htmlFor='email'
@@ -28,11 +76,11 @@ export default function page() {
               <div className='mt-2'>
                 <input
                   id='email'
-                  name='email'
+                  name='mail'
                   type='email'
                   autoComplete='email'
-                  required
-                  className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset  sm:text-sm sm:leading-6'
+                  onChange={handleChange}
+                  className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset  sm:text-sm sm:leading-6 px-2'
                 />
               </div>
             </div>
@@ -60,15 +108,15 @@ export default function page() {
                   name='password'
                   type='password'
                   autoComplete='current-password'
-                  required
-                  className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset  sm:text-sm sm:leading-6'
+                  onChange={handleChange}
+                  className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset  sm:text-sm sm:leading-6  px-2'
                 />
               </div>
             </div>
 
             <div>
               <button type='submit' className='btn-primary w-full '>
-                Sign in
+                {loading ? <span>loading...</span> : <span> Sign in</span>}
               </button>
             </div>
           </form>

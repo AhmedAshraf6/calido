@@ -20,3 +20,4 @@ export const navLiks = [
     link: '/contact',
   },
 ];
+export const BaseUrl = 'https://calido.onrender.com/api/v1';

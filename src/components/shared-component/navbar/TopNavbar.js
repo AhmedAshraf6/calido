@@ -5,15 +5,15 @@ import { CgProfile } from 'react-icons/cg';
 import { FaFacebook } from 'react-icons/fa';
 import { AiOutlineTwitter, AiFillInstagram } from 'react-icons/ai';
 import { HiMiniBars3 } from 'react-icons/hi2';
-import { BiSearch } from 'react-icons/bi';
-
 import CartButton from './CartButton';
 import { useMainContext } from '@/contexts/MainContext';
 import Link from 'next/link';
-import InputField from '../InputField';
 import SearchInput from './SearchInput';
+import Cookies from 'js-cookie';
+
 export default function TopNavbar() {
-  const { detectNavbar, navbar, amount } = useMainContext();
+  const { detectNavbar } = useMainContext();
+  const token = Cookies.get('calidoUser');
 
   return (
     <>
@@ -42,15 +42,21 @@ export default function TopNavbar() {
             <div className='hidden lg:block'>
               <SearchInput />
             </div>
-            <Link href='/profile'>
-              <CgProfile className='hidden lg:block cursor-pointer hover:text-primary smooth text-2xl' />
-            </Link>
-            <Link
-              href='/signin'
-              className='hidden lg:block btn-primary whitespace-nowrap'
-            >
-              Sign in
-            </Link>
+
+            {token && (
+              <Link href='/profile'>
+                <CgProfile className='hidden lg:block cursor-pointer hover:text-primary smooth text-2xl' />
+              </Link>
+            )}
+
+            {!token && (
+              <Link
+                href='/signin'
+                className='hidden lg:block btn-primary whitespace-nowrap'
+              >
+                Sign in
+              </Link>
+            )}
             <Link href='/cart'>
               <CartButton count='1' />
             </Link>
