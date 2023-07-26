@@ -5,6 +5,7 @@ import MainProvider from '@/contexts/MainContext';
 import AsideNavbar from '@/components/shared-component/navbar/AsideNavbar';
 import Navbar from '@/components/shared-component/navbar/Navbar';
 import Footer from '@/components/shared-component/Footer';
+
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import SearchInput from '@/components/shared-component/navbar/SearchInput';

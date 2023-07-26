@@ -9,13 +9,17 @@ import { toast } from 'react-toastify';
 // import geoip from 'geoip-lite';
 async function getData() {
   const res = await fetch(`${BaseUrl}/products`);
-  // The return value is *not* serialized
-  // You can return Date, Map, Set, etc.
-
-  // Recommendation: handle errors
   if (!res.ok) {
-    // This will activate the closest `error.js` Error Boundary
     toast.error('error happen');
+  }
+
+  return res.json();
+}
+async function getUserLocation() {
+  const res = await fetch('https://ipapi.co/json/');
+
+  if (!res.ok) {
+    toast.error('user location error');
   }
 
   return res.json();
@@ -23,7 +27,7 @@ async function getData() {
 
 export default async function Home() {
   const data = await getData();
-  console.log(data);
+  const userLoc = await getUserLocation();
   return (
     <div>
       <Slider />

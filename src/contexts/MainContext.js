@@ -16,7 +16,6 @@ export default function MainProvider({ children }) {
   const AddUser = (calidoUser) => {
     dispatch({ type: ADD_USER, payload: calidoUser });
   };
-
   return (
     <MainContext.Provider value={{ ...state, detectNavbar, AddUser }}>
       {children}

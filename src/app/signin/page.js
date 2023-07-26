@@ -30,7 +30,6 @@ export default function SignIn() {
           'Content-Type': 'application/json',
         },
       });
-      console.log(response);
       Cookies.set('calidoUser', response?.data?.token, {
         expires: 7,
         secure: true,
@@ -39,9 +38,7 @@ export default function SignIn() {
       toast.success('Login success');
       router.push('/profile');
     } catch (error) {
-      console.log('Login failed', error.message);
       toast.error(error.message);
-      console.log(error);
     } finally {
       setLoading(false);
     }
