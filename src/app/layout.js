@@ -9,6 +9,7 @@ import Footer from '@/components/shared-component/Footer';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import SearchInput from '@/components/shared-component/navbar/SearchInput';
+import FilterProvider from '@/contexts/FilterContext';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata = {
@@ -21,18 +22,20 @@ export default function RootLayout({ children }) {
     <html lang='en'>
       <body className={inter.className}>
         <MainProvider>
-          <TopNavbar />
-          <div className='container my-3 lg:hidden'>
-            <SearchInput />
-          </div>
-          <Navbar />
-          {/* Responsive Navbar */}
-          <div>
-            <AsideNavbar />
-          </div>
-          {children}
-          <Footer />
-          <ToastContainer position='top-center' />
+          <FilterProvider>
+            <TopNavbar />
+            <div className='container my-3 lg:hidden'>
+              <SearchInput />
+            </div>
+            <Navbar />
+            {/* Responsive Navbar */}
+            <div>
+              <AsideNavbar />
+            </div>
+            {children}
+            <Footer />
+            <ToastContainer position='top-center' />
+          </FilterProvider>
         </MainProvider>
       </body>
     </html>

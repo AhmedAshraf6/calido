@@ -1,4 +1,4 @@
-import Item from '@/components/shared-component/Item';
+import Item from '@/components/shared-component/Product';
 import Info from '@/components/singleitem/Info';
 import LinkComponent from '@/components/singleitem/LinkComponent';
 import Slider from '@/components/singleitem/Slider';

@@ -1,15 +1,48 @@
+'use client';
+import { useFilterContext } from '@/contexts/FilterContext';
 import React from 'react';
 
 export default function SortShop() {
+  const {
+    isLoading,
+    handleChangeFunc,
+    sort,
+    sortOptions,
+    ClearFilter,
+    totalProducts,
+    products,
+  } = useFilterContext();
+  const handleChange = (e) => {
+    if (isLoading) return;
+    handleChangeFunc({ name: e.target.name, value: e.target.value });
+  };
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    ClearFilter();
+  };
   return (
-    <div className='flex items-center justify-between gap-3 flex-wrap'>
-      <span>Showing 1-12 of Results</span>
+    <form
+      className='flex items-center justify-between gap-3 flex-wrap'
+      onSubmit={handleSubmit}
+    >
+      <button type='submit' className='btn-primary'>
+        clear filter
+      </button>
+      <h2 className='mb-3 text-dark text-md sm:text-2xl '>
+        {totalProducts} product{products.length > 1 && 's'} found
+      </h2>
       <div className='relative'>
-        <select className='block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline'>
-          <option>Default Sorting</option>
-          <option>Sort by popularity</option>
-          <option>Sort by popularity</option>
-          <option>Sort by popularity</option>
+        <select
+          className='block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline'
+          value={sort}
+          name='sort'
+          onChange={handleChange}
+        >
+          {sortOptions.map((option, index) => (
+            <option key={index} value={option}>
+              {option}
+            </option>
+          ))}
         </select>
         <div className='pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700'>
           <svg className='fill-current h-4 w-4' viewBox='0 0 20 20'>
@@ -17,6 +50,6 @@ export default function SortShop() {
           </svg>
         </div>
       </div>
-    </div>
+    </form>
   );
 }

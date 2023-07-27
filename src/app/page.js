@@ -2,7 +2,7 @@ import Slider from '@/components/home/Slider';
 import React from 'react';
 
 import Sale from '@/components/home/Sale';
-import Item from '@/components/shared-component/Item';
+import Item from '@/components/shared-component/Product';
 import UserLocation from '@/components/shared-component/UserLocation';
 import { BaseUrl } from '@/util/constants';
 import { toast } from 'react-toastify';
