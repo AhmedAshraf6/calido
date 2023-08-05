@@ -25,16 +25,17 @@ export default function SignIn() {
     }
     try {
       setLoading(true);
-      const response = await customFetch.post('/users/login', data, {
+      const response = await customFetch.post('/auth/login', data, {
         headers: {
           'Content-Type': 'application/json',
         },
       });
+      // console.log(response);
       Cookies.set('calidoUser', response?.data?.token, {
         expires: 7,
         secure: true,
       });
-      AddUser(response?.data);
+      AddUser(response?.data?.user);
       toast.success('Login success');
       router.push('/profile');
     } catch (error) {

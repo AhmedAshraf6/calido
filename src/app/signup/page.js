@@ -1,5 +1,6 @@
 'use client';
 import InputField from '@/components/shared-component/InputField';
+import SelectBox from '@/components/shared-component/SelectBox';
 import customFetch from '@/util/axios';
 import axios from 'axios';
 import Link from 'next/link';
@@ -8,15 +9,22 @@ import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 
 export default function SignUp() {
+  const fetchUserLocation = async () => {
+    const res = await axios('https://ipapi.co/json/');
+    const { country_name } = res.data;
+    setData({ ...data, country: country_name });
+  };
+  const fetchCountries = async () => {
+    const res = await axios('https://calido.onrender.com/api/v1/countries');
+    setCountries(res?.data.results?.rows);
+    console.log(res.data);
+  };
   useEffect(() => {
-    const fetchUserLocation = async () => {
-      const res = await axios('https://ipapi.co/json/');
-      const { country_name } = res.data;
-      setData({ ...data, country: country_name });
-    };
     fetchUserLocation();
+    fetchCountries();
   }, []);
   const [loading, setLoading] = useState(false);
+  const [countries, setCountries] = useState([]);
   const router = useRouter();
   const [data, setData] = useState({
     firstName: '',
@@ -30,7 +38,7 @@ export default function SignUp() {
   const { firstName, lastName, phone, country, address, mail, password } = data;
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!mail || !password || !firstName || !lastName) {
+    if (!mail || !password || !firstName || !phone || !country) {
       toast.error('Please Fill Out All Fields');
       return;
     }
@@ -41,7 +49,7 @@ export default function SignUp() {
           'Content-Type': 'application/json',
         },
       });
-
+      console.log(response);
       toast.success('You are member now');
       router.push('/signin');
     } catch (error) {
@@ -82,14 +90,12 @@ export default function SignUp() {
               value={firstName}
               requried='requried'
             />
-
             <InputField
               label='Last Name'
               type='text'
               name='lastName'
               handleChange={handleChange}
               value={lastName}
-              requried='requried'
             />
             <InputField
               label='Email'
@@ -113,6 +119,7 @@ export default function SignUp() {
               name='phone'
               handleChange={handleChange}
               value={phone}
+              requried='requried'
             />
             <InputField
               label='Address'
@@ -120,8 +127,28 @@ export default function SignUp() {
               name='address'
               handleChange={handleChange}
               value={address}
-            />
-
+            />{' '}
+            <div className='mb-4'>
+              <label
+                className='block text-gray-700 font-bold mb-2'
+                htmlFor={country}
+              >
+                Country <span className='text-[#ff000080] text-lg'>*</span>
+              </label>
+              <select
+                className='block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline'
+                name='country'
+                onChange={handleChange}
+                required
+                defaultValue={country}
+              >
+                {countries?.map((country) => (
+                  <option key={country.id} value={country.name}>
+                    {country.name}
+                  </option>
+                ))}
+              </select>
+            </div>
             <button type='submit' className='btn-primary w-full'>
               Sign Up
             </button>

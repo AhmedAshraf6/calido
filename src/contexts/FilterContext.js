@@ -13,8 +13,33 @@ import {
 import customFetch from '@/util/axios';
 const FilterContext = createContext();
 const initialFiltersState = {
-  sort: 'latest',
-  sortOptions: ['latest', 'oldest', 'a-z', 'z-a'],
+  order: 'latest',
+  sortOptions: [
+    {
+      name: 'newest',
+      value: 'newest',
+    },
+    {
+      name: 'oldest',
+      value: 'oldest',
+    },
+    {
+      name: 'High Salary',
+      value: 'high',
+    },
+    {
+      name: 'Low Salary',
+      value: 'low',
+    },
+    {
+      name: 'A-Z',
+      value: 'az',
+    },
+    {
+      name: 'Z-A',
+      value: 'za',
+    },
+  ],
 };
 const initialState = {
   isLoading: false,
@@ -31,13 +56,13 @@ export default function FilterProvider({ children }) {
     dispatch({ type: SHOW_LOADING_FILTER });
     try {
       // let url = `/products?sort=${state.sort}&page=${state.page}`;
-      const res = await customFetch.get('/products');
+      const res = await customFetch.get(`/products?order=${state.order}`);
       console.log(res.data);
       dispatch({
         type: GET_ALL_PRODUCTS,
-        payload: res?.data?.results?.rows,
+        payload: res?.data?.products?.rows,
         payload2: res?.data?.numberOfPages,
-        payload3: res?.data?.results?.count,
+        payload3: res?.data?.products?.count,
       });
     } catch (error) {
       dispatch({

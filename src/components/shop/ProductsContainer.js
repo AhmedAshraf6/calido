@@ -7,12 +7,12 @@ import Loading from '@/app/loading';
 import Product from '../shared-component/Product';
 
 export default function ProductsContainer() {
-  const { products, isLoading, page, numOfPages, sort, GetProducts } =
+  const { products, isLoading, page, numOfPages, order, GetProducts } =
     useFilterContext();
 
   useEffect(() => {
     GetProducts();
-  }, [page, sort]);
+  }, [page, order]);
   if (isLoading) {
     return (
       <div className='mt-3'>
@@ -21,7 +21,7 @@ export default function ProductsContainer() {
     );
   }
 
-  if (products.length === 0) {
+  if (products && products.length === 0) {
     return (
       <h1 className='text-lg sm:text-2xl text-dark'>
         No Products to display...
@@ -31,10 +31,11 @@ export default function ProductsContainer() {
   return (
     <>
       <div className='grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4  gap-5 py-3 mt-3 sm:mt-6'>
-        {products.map((product) => {
-          console.log(product);
-          return <Product key={product.id} {...product} />;
-        })}
+        {products &&
+          products.map((product) => {
+            console.log(product);
+            return <Product key={product.id} {...product} />;
+          })}
       </div>
       {numOfPages > 1 && <Pagination />}
     </>

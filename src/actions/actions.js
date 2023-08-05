@@ -6,6 +6,7 @@ export const CALCULATE_TOTALS = 'CALCULATE_TOTALS';
 
 // User
 export const ADD_USER = 'ADD_USER';
+export const REMOVE_USER = 'REMOVE_USER';
 
 // Filters
 export const SHOW_LOADING_FILTER = 'SHOW_LOADING_FILTER';
