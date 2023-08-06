@@ -30,7 +30,7 @@ export default function ProductsContainer() {
   }
   return (
     <>
-      <div className='grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4  gap-5 py-3 mt-3 sm:mt-6'>
+      <div className='grid sm:grid-cols-2 md:grid-cols-3  gap-5 '>
         {products &&
           products.map((product) => {
             console.log(product);

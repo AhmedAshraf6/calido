@@ -22,13 +22,7 @@ export default function SortShop() {
     ClearFilter();
   };
   return (
-    <form
-      className='flex items-center justify-between gap-3 flex-wrap'
-      onSubmit={handleSubmit}
-    >
-      <button type='submit' className='btn-primary'>
-        clear filter
-      </button>
+    <form className='flex flex-col gap-3 flex-wrap' onSubmit={handleSubmit}>
       <h2 className='mb-3 text-dark text-md sm:text-2xl '>
         {products.length} product{products.length > 1 && 's'} found
       </h2>
@@ -45,6 +39,9 @@ export default function SortShop() {
           </svg>
         </div>
       </div>
+      <button type='submit' className='btn-primary'>
+        clear filter
+      </button>
     </form>
   );
 }

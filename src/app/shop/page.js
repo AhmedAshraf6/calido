@@ -11,8 +11,14 @@ export default function page() {
       <div className='mt-8 sm:mt-24'>
         <div className='container'>
           {/* Sort */}
-          <SortShop />
-          <ProductsContainer />
+          <div className='grid grid-cols-1 lg:grid-cols-4 items-start gap-4'>
+            <div className='col-span-1 lg:col-span-3'>
+              <ProductsContainer />
+            </div>
+            <div className='col-span-1 lg:col-span-1'>
+              <SortShop />
+            </div>
+          </div>
         </div>
       </div>
     </section>
