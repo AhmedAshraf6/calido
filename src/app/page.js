@@ -58,14 +58,15 @@ export default async function Home() {
 
       {/* Categories */}
       {categoriesProducts?.results?.rows.map((category) => {
+        console.log(category);
         return (
-          <div className='my-8 sm:mt-24'>
+          <div className='my-8 sm:mt-24' key={category.id}>
             <div className='container '>
               <h1 className='head mb-3 sm:mb-4'>{category?.name}</h1>
 
               <div className='grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4  gap-5 py-3 mt-3 sm:mt-6'>
                 {category?.products.map((product) => {
-                  return <Product {...product} />;
+                  return <Product {...product} key={product.id} />;
                 })}
               </div>
             </div>
