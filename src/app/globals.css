@@ -24,6 +24,13 @@
 .visiblenav {
   left: 0%;
 }
+.filter {
+  left: -100%;
+  transition: all ease-in-out 1s;
+}
+.visiblefilter {
+  left: 0%;
+}
 .swiper {
   width: 100%;
   height: 50vh;

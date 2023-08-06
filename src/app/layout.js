@@ -10,6 +10,7 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import SearchInput from '@/components/shared-component/navbar/SearchInput';
 import FilterProvider from '@/contexts/FilterContext';
+import ReponsiveFilter from '@/components/shop/ReponsiveFilter';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata = {
@@ -31,6 +32,9 @@ export default function RootLayout({ children }) {
             {/* Responsive Navbar */}
             <div>
               <AsideNavbar />
+            </div>
+            <div>
+              <ReponsiveFilter />
             </div>
             {children}
             <Footer />

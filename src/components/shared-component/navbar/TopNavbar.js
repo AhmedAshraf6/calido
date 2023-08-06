@@ -1,6 +1,6 @@
 'use client';
 import Image from 'next/image';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { CgProfile } from 'react-icons/cg';
 import { FaFacebook } from 'react-icons/fa';
 import { AiOutlineTwitter, AiFillInstagram } from 'react-icons/ai';
@@ -13,8 +13,11 @@ import Cookies from 'js-cookie';
 
 export default function TopNavbar() {
   const { detectNavbar } = useMainContext();
+  const [isClient, setIsClient] = useState(false);
   const token = Cookies.get('calidoUser');
-
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
   return (
     <>
       <nav className='py-5 lg:py-10 px-5 lg:px-8 '>
@@ -43,13 +46,13 @@ export default function TopNavbar() {
               <SearchInput />
             </div>
 
-            {token && (
+            {isClient && token && (
               <Link href='/profile'>
                 <CgProfile className='hidden lg:block cursor-pointer hover:text-primary smooth text-2xl' />
               </Link>
             )}
 
-            {!token && (
+            {isClient && !token && (
               <Link
                 href='/signin'
                 className='hidden lg:block btn-primary whitespace-nowrap'

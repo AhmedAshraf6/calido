@@ -1,14 +1,17 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import InputField from '@/components/shared-component/InputField';
 import { toast } from 'react-toastify';
+import { useMainContext } from '@/contexts/MainContext';
 
 export default function AccountFormEdit() {
+  const { user } = useMainContext();
   const [data, setData] = useState({
-    firstname: '',
-    lastname: '',
-    displayname: '',
-    email: '',
+    firstname: user?.firstName || '',
+    lastname: user?.lastName || '',
+    email: user?.mail || '',
+    phone: user?.phone || '',
+    address: user?.address || '',
     currpassword: '',
     newpass: '',
     confirmnewpass: '',
@@ -16,8 +19,9 @@ export default function AccountFormEdit() {
   const {
     firstname,
     lastname,
-    displayname,
     email,
+    phone,
+    address,
     currpassword,
     newpass,
     confirmnewpass,
@@ -35,6 +39,18 @@ export default function AccountFormEdit() {
     const value = e.target.value;
     setData({ ...data, [name]: value });
   };
+  useEffect(() => {
+    setData({
+      firstname: user?.firstName || '',
+      lastname: user?.lastName || '',
+      email: user?.mail || '',
+      phone: user?.phone || '',
+      address: user?.address || '',
+      currpassword: '',
+      newpass: '',
+      confirmnewpass: '',
+    });
+  }, [user]);
   return (
     <form onSubmit={handleSubmit} className='flex flex-col  gap-y-4 sm:gap-y-8'>
       <div className='grid sm:grid-cols-2 gap-x-3'>
@@ -52,17 +68,9 @@ export default function AccountFormEdit() {
           name='lastname'
           handleChange={handleChange}
           value={lastname}
-          requried='requried'
         />
       </div>
-      <InputField
-        label='Display Name'
-        type='text'
-        name='displayname'
-        handleChange={handleChange}
-        value={displayname}
-        requried='requried'
-      />
+
       <InputField
         label='Email address'
         type='email'
@@ -70,6 +78,22 @@ export default function AccountFormEdit() {
         handleChange={handleChange}
         value={email}
         requried='requried'
+      />
+      <InputField
+        label='Phone Number'
+        type='text'
+        name='phone'
+        handleChange={handleChange}
+        value={phone}
+        requried='requried'
+      />
+
+      <InputField
+        label='Address'
+        type='text'
+        name='address'
+        handleChange={handleChange}
+        value={address}
       />
       <div className='mx-0 sm:mx-4'>
         <h2 className='text-lg font-bold '>Password change</h2>

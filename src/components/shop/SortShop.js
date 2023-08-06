@@ -22,7 +22,7 @@ export default function SortShop() {
     ClearFilter();
   };
   return (
-    <form className='flex flex-col gap-3 flex-wrap' onSubmit={handleSubmit}>
+    <form className='flex flex-col gap-3 flex-wrap ' onSubmit={handleSubmit}>
       <h2 className='mb-3 text-dark text-md sm:text-2xl '>
         {products.length} product{products.length > 1 && 's'} found
       </h2>

@@ -36,7 +36,6 @@ export default async function Home() {
   const data = await getData();
   // Categories
   const categoriesProducts = await getCategoriesProducts();
-  console.log(categoriesProducts);
   const userLoc = await getUserLocation();
   return (
     <div>
@@ -58,7 +57,6 @@ export default async function Home() {
 
       {/* Categories */}
       {categoriesProducts?.results?.rows.map((category) => {
-        console.log(category);
         return (
           <div className='my-8 sm:mt-24' key={category.id}>
             <div className='container '>

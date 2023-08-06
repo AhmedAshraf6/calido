@@ -1,6 +1,7 @@
 'use client';
 import InputField from '@/components/shared-component/InputField';
 import SelectBox from '@/components/shared-component/SelectBox';
+import { useMainContext } from '@/contexts/MainContext';
 import customFetch from '@/util/axios';
 import axios from 'axios';
 import Link from 'next/link';
@@ -9,6 +10,8 @@ import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 
 export default function SignUp() {
+  const { AddUser } = useMainContext();
+
   const fetchUserLocation = async () => {
     const res = await axios('https://ipapi.co/json/');
     const { country_name } = res.data;
@@ -17,7 +20,6 @@ export default function SignUp() {
   const fetchCountries = async () => {
     const res = await axios('https://calido.onrender.com/api/v1/countries');
     setCountries(res?.data.results?.rows);
-    console.log(res.data);
   };
   useEffect(() => {
     fetchUserLocation();
@@ -49,12 +51,13 @@ export default function SignUp() {
           'Content-Type': 'application/json',
         },
       });
-      console.log(response);
+      AddUser({ ...response?.data?.user, password });
       toast.success('You are member now');
       router.push('/signin');
     } catch (error) {
-      toast.error(error.message);
-      console.log(error);
+      if (error?.response?.status === 400) {
+        toast.error('your phone number or email is alread exist change it');
+      }
     } finally {
       setLoading(false);
     }

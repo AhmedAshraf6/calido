@@ -9,12 +9,12 @@ import Cookies from 'js-cookie';
 import { useMainContext } from '@/contexts/MainContext';
 
 export default function SignIn() {
-  const { AddUser } = useMainContext();
+  const { AddUser, user } = useMainContext();
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const [data, setData] = useState({
-    mail: '',
-    password: '',
+    mail: user?.mail || '',
+    password: user?.password || '',
   });
   const { mail, password } = data;
   const handleSubmit = async (e) => {
@@ -79,6 +79,7 @@ export default function SignIn() {
                   id='email'
                   name='mail'
                   type='email'
+                  value={mail}
                   autoComplete='email'
                   onChange={handleChange}
                   className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset  sm:text-sm sm:leading-6 px-2'
@@ -108,6 +109,7 @@ export default function SignIn() {
                   id='password'
                   name='password'
                   type='password'
+                  value={password}
                   autoComplete='current-password'
                   onChange={handleChange}
                   className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset  sm:text-sm sm:leading-6  px-2'

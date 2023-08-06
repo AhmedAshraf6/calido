@@ -11,6 +11,7 @@ import {
   SHOW_LOADING_FILTER,
 } from '@/actions/actions';
 import customFetch from '@/util/axios';
+import { useMainContext } from './MainContext';
 const FilterContext = createContext();
 const initialFiltersState = {
   order: 'latest',
@@ -52,12 +53,14 @@ const initialState = {
 };
 export default function FilterProvider({ children }) {
   const [state, dispatch] = useReducer(FilterReducer, initialState);
+  const { detectFilter } = useMainContext();
   const GetProducts = async () => {
     dispatch({ type: SHOW_LOADING_FILTER });
     try {
       // let url = `/products?sort=${state.sort}&page=${state.page}`;
-      const res = await customFetch.get(`/products?order=${state.order}`);
-      console.log(res.data);
+      const res = await customFetch.get(
+        `/products?order=${state.order}&page=${state.page}`
+      );
       dispatch({
         type: GET_ALL_PRODUCTS,
         payload: res?.data?.products?.rows,
@@ -75,11 +78,13 @@ export default function FilterProvider({ children }) {
       type: HANDLE_CHANGE_FILTER,
       payload: data,
     });
+    detectFilter(false);
   };
   const ClearFilter = () => {
     dispatch({
       type: CLEAR_FILTER,
     });
+    detectFilter(false);
   };
   const changePage = (page) => {
     dispatch({

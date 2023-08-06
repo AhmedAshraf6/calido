@@ -14,14 +14,14 @@ export default function Pagination() {
     if (newPage > numOfPages) {
       newPage = 1;
     }
-    changePage();
+    changePage(newPage);
   };
   const prevPage = () => {
     let newPage = page - 1;
     if (newPage < 1) {
       newPage = numOfPages;
     }
-    changePage();
+    changePage(newPage);
   };
   return (
     <div className='flex items-center justify-between flex-wrap mt-4 sm:mt-8'>
@@ -41,7 +41,7 @@ export default function Pagination() {
                 : '  hover:border-primary  hover:text-primary '
             }`}
             key={pageNumber}
-            onClick={() => dispatch(changePage(pageNumber))}
+            onClick={() => changePage(pageNumber)}
           >
             {pageNumber}
           </span>
@@ -55,7 +55,7 @@ export default function Pagination() {
       </div>
       <button
         className='text-base sm:text-lg py-2 px-3 flex gap-2 items-center border-2 border-gray-200 hover:border-primary hover:text-primary duration-200'
-        onClick={prevPage}
+        onClick={nextPage}
       >
         Next
       </button>
