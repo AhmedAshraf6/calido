@@ -7,6 +7,10 @@ import {
   DETECT_FILTER,
   DETECT_NAVBAR,
   REMOVE_USER,
+  ADD_PRODUCT,
+  CALCULATE_TOTALS,
+  REMOVE_PRODUCT,
+  UPDATE_CARD,
 } from '@/actions/actions';
 import Cookies from 'js-cookie';
 import { toast } from 'react-toastify';
@@ -16,6 +20,11 @@ const intialState = {
   navbar: false,
   filter: false,
   user: {},
+  productsData: [],
+  cart: [],
+  itemsInCart: [],
+  total: 0,
+  amount: 0,
 };
 export default function MainProvider({ children }) {
   const [state, dispatch] = useReducer(MainReducer, intialState);
@@ -34,6 +43,9 @@ export default function MainProvider({ children }) {
     dispatch({ type: REMOVE_USER });
   };
   const UpdateUserContext = async () => {
+    if (!token) {
+      return;
+    }
     try {
       const response = await customFetch('/users/me', {
         headers: {
@@ -47,9 +59,22 @@ export default function MainProvider({ children }) {
       console.log(error);
     }
   };
+  // Products
+  const addProduct = (id) => {
+    dispatch({ type: ADD_PRODUCT, payload: id });
+  };
+  const removeProduct = (id) => {
+    dispatch({ type: REMOVE_PRODUCT, payload: id });
+  };
+  const updateCart = (id, amount) => {
+    dispatch({ type: UPDATE_CARD, payload: id, payload2: amount });
+  };
   useEffect(() => {
     UpdateUserContext();
   }, []);
+  useEffect(() => {
+    dispatch({ type: CALCULATE_TOTALS });
+  }, [state.cart]);
   return (
     <MainContext.Provider
       value={{ ...state, detectNavbar, AddUser, removeUser, detectFilter }}

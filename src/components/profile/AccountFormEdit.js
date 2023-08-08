@@ -3,13 +3,17 @@ import React, { useEffect, useState } from 'react';
 import InputField from '@/components/shared-component/InputField';
 import { toast } from 'react-toastify';
 import { useMainContext } from '@/contexts/MainContext';
+import customFetch from '@/util/axios';
+import Cookies from 'js-cookie';
 
 export default function AccountFormEdit() {
   const { user } = useMainContext();
+  const token = Cookies.get('calidoUser');
+
   const [data, setData] = useState({
-    firstname: user?.firstName || '',
-    lastname: user?.lastName || '',
-    email: user?.mail || '',
+    firstName: user?.firstName || '',
+    lastName: user?.lastName || '',
+    mail: user?.mail || '',
     phone: user?.phone || '',
     address: user?.address || '',
     currpassword: '',
@@ -17,20 +21,44 @@ export default function AccountFormEdit() {
     confirmnewpass: '',
   });
   const {
-    firstname,
-    lastname,
-    email,
+    firstName,
+    lastName,
+    mail,
     phone,
     address,
     currpassword,
     newpass,
     confirmnewpass,
   } = data;
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!firstname) {
-      toast.error('Please Fill Out All Fields');
+    if (!firstName || !mail || !phone) {
+      toast.error('Please Fill required fields');
       return;
+    }
+    if (currpassword || newpass || confirmnewpass) {
+      if (!currpassword || !newpass || !confirmnewpass) {
+        toast.error('Please Fill Out all password fields');
+        return;
+      }
+      if (newpass !== confirmnewpass) {
+        toast.error('newpassword shouid be the same with confirm new password');
+        return;
+      }
+    }
+    // console.log(data);
+    try {
+      const response = await customFetch.put('/users/me', data, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      toast.success('your data updated succesfully');
+      console.log(response);
+    } catch (error) {
+      toast.error(error.message);
+      console.log(error);
     }
     return;
   };
@@ -41,9 +69,9 @@ export default function AccountFormEdit() {
   };
   useEffect(() => {
     setData({
-      firstname: user?.firstName || '',
-      lastname: user?.lastName || '',
-      email: user?.mail || '',
+      firstName: user?.firstName || '',
+      lastName: user?.lastName || '',
+      mail: user?.mail || '',
       phone: user?.phone || '',
       address: user?.address || '',
       currpassword: '',
@@ -57,26 +85,26 @@ export default function AccountFormEdit() {
         <InputField
           label='First Name'
           type='text'
-          name='firstname'
+          name='firstName'
           handleChange={handleChange}
-          value={firstname}
+          value={firstName}
           requried='requried'
         />
         <InputField
           label='Last Name'
           type='text'
-          name='lastname'
+          name='lastName'
           handleChange={handleChange}
-          value={lastname}
+          value={lastName}
         />
       </div>
 
       <InputField
         label='Email address'
         type='email'
-        name='email'
+        name='mail'
         handleChange={handleChange}
-        value={email}
+        value={mail}
         requried='requried'
       />
       <InputField
@@ -122,7 +150,7 @@ export default function AccountFormEdit() {
         </div>
       </div>
       <button type='submit' className='btn-primary self-start'>
-        Save changes
+        Edit changes
       </button>
     </form>
   );

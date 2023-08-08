@@ -43,7 +43,7 @@ export default function Product({ name_en, price, newPrice, sale }) {
         </div>
       </Link>
       <button className=' btn-primary mx-2 mb-5'>Add to cart</button>
-      {newPrice !== price && (
+      {sale !== 0 && (
         <span className='bg-primary text-black rounded-md px-2 py-1 absolute top-[10px] left-[10px] text-sm font-semibold'>
           sale!
         </span>

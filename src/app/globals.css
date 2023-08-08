@@ -8,6 +8,12 @@
 .btn-primary:hover {
   @apply bg-primary;
 }
+.btn-danger {
+  @apply bg-red-700 text-white rounded-md text-sm sm:text-lg font-semibold transition-all duration-200 px-3 py-1 sm:px-6 sm:py-2;
+}
+.btn-danger:hover {
+  @apply bg-red-900;
+}
 .smooth {
   @apply transition duration-200;
 }

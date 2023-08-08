@@ -7,6 +7,7 @@ import React, { useState } from 'react';
 import { toast } from 'react-toastify';
 import Cookies from 'js-cookie';
 import { useMainContext } from '@/contexts/MainContext';
+import SignInWithGoogle from '@/components/signinwithgoogle/SignInWithGoogle';
 
 export default function SignIn() {
   const { AddUser, user } = useMainContext();
@@ -123,7 +124,7 @@ export default function SignIn() {
               </button>
             </div>
           </form>
-
+          <SignInWithGoogle />
           <p className='mt-5 sm:mt-10 text-center text-sm text-gray-500'>
             Not a member?
             <Link
