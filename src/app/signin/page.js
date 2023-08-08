@@ -3,7 +3,7 @@ import customFetch from '@/util/axios';
 import { addUserToLocalStorage } from '@/util/localstorage';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import Cookies from 'js-cookie';
 import { useMainContext } from '@/contexts/MainContext';
@@ -13,11 +13,13 @@ export default function SignIn() {
   const { AddUser, user } = useMainContext();
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+
   const [data, setData] = useState({
     mail: user?.mail || '',
     password: user?.password || '',
   });
   const { mail, password } = data;
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!mail || !password) {
@@ -33,7 +35,7 @@ export default function SignIn() {
       });
       // console.log(response);
       Cookies.set('calidoUser', response?.data?.token, {
-        expires: 7,
+        expires: 1,
         secure: true,
       });
       AddUser(response?.data?.user);

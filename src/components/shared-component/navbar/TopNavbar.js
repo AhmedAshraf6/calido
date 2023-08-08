@@ -41,17 +41,16 @@ export default function TopNavbar() {
               className='max-w-full object-contain w-[40px] lg:w-[60px] h-auto'
             />
           </Link>
+
           <div className='flex items-center gap-5 col-span-1 lg:col-span-2  '>
             <div className='hidden lg:block'>
               <SearchInput />
             </div>
-
             {isClient && token && (
               <Link href='/profile'>
                 <CgProfile className='hidden lg:block cursor-pointer hover:text-primary smooth text-2xl' />
               </Link>
             )}
-
             {isClient && !token && (
               <Link
                 href='/signin'
@@ -60,6 +59,18 @@ export default function TopNavbar() {
                 Sign in
               </Link>
             )}
+            {/* Resonsive Mode */}
+            {isClient && !token && (
+              <Link href='/signin' className='block lg:hidden'>
+                Sign in
+              </Link>
+            )}
+            {isClient && token && (
+              <Link href='/profile' className='block lg:hidden'>
+                <CgProfile className='cursor-pointer hover:text-primary smooth text-2xl' />
+              </Link>
+            )}
+
             <Link href='/cart'>
               <CartButton count='1' />
             </Link>
