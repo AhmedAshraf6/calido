@@ -61,7 +61,10 @@ export default function TopNavbar() {
             )}
             {/* Resonsive Mode */}
             {isClient && !token && (
-              <Link href='/signin' className='block lg:hidden'>
+              <Link
+                href='/signin'
+                className='block lg:hidden whitespace-nowrap'
+              >
                 Sign in
               </Link>
             )}
