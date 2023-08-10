@@ -16,37 +16,28 @@ export default function AccountFormEdit() {
     mail: user?.mail || '',
     phone: user?.phone || '',
     address: user?.address || '',
-    currpassword: '',
-    newpass: '',
-    confirmnewpass: '',
+    old_password: '',
+    password: '',
   });
-  const {
-    firstName,
-    lastName,
-    mail,
-    phone,
-    address,
-    currpassword,
-    newpass,
-    confirmnewpass,
-  } = data;
+  const { firstName, lastName, mail, phone, address, old_password, password } =
+    data;
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!firstName || !mail || !phone) {
+    if (!firstName || !mail) {
       toast.error('Please Fill required fields');
       return;
     }
-    if (currpassword || newpass || confirmnewpass) {
-      if (!currpassword || !newpass || !confirmnewpass) {
-        toast.error('Please Fill Out all password fields');
-        return;
-      }
-      if (newpass !== confirmnewpass) {
-        toast.error('newpassword shouid be the same with confirm new password');
-        return;
-      }
-    }
-    // console.log(data);
+    // if (old_password || password || confirmnewpass) {
+    //   if (!old_password || !password || !confirmnewpass) {
+    //     toast.error('Please Fill Out all password fields');
+    //     return;
+    //   }
+    //   if (password !== confirmnewpass) {
+    //     toast.error('newpassword shouid be the same with confirm new password');
+    //     return;
+    //   }
+    // }
+    console.log(data);
     try {
       const response = await customFetch.put('/users/me', data, {
         headers: {
@@ -74,9 +65,8 @@ export default function AccountFormEdit() {
       mail: user?.mail || '',
       phone: user?.phone || '',
       address: user?.address || '',
-      currpassword: '',
-      newpass: '',
-      confirmnewpass: '',
+      old_password: '',
+      password: '',
     });
   }, [user]);
   return (
@@ -129,24 +119,24 @@ export default function AccountFormEdit() {
           <InputField
             label='Current password (leave blank to leave inchanged)'
             type='password'
-            name='currpassword'
+            name='old_password'
             handleChange={handleChange}
-            value={currpassword}
+            value={old_password}
           />
           <InputField
             label='New password (leave blank to leave inchanged)'
             type='password'
-            name='newpass'
+            name='password'
             handleChange={handleChange}
-            value={newpass}
+            value={password}
           />
-          <InputField
+          {/* <InputField
             label='Confirm new password'
             type='password'
             name='confirmnewpass'
             handleChange={handleChange}
             value={confirmnewpass}
-          />
+          /> */}
         </div>
       </div>
       <button type='submit' className='btn-primary self-start'>

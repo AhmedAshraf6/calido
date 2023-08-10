@@ -11,36 +11,36 @@ import { toast } from 'react-toastify';
 
 export default function SignUp() {
   const { AddUser } = useMainContext();
-
-  const fetchUserLocation = async () => {
-    const res = await axios('https://ipapi.co/json/');
-    const { country_name } = res.data;
-    setData({ ...data, country: country_name });
-  };
-  const fetchCountries = async () => {
-    const res = await axios('https://calido.onrender.com/api/v1/countries');
-    setCountries(res?.data.results?.rows);
-  };
-  useEffect(() => {
-    fetchUserLocation();
-    fetchCountries();
-  }, []);
+  // Fetch Countries
+  // const fetchUserLocation = async () => {
+  //   const res = await axios('https://ipapi.co/json/');
+  //   const { country_name } = res.data;
+  //   setData({ ...data, country: country_name });
+  // };
+  // const fetchCountries = async () => {
+  //   const res = await axios('https://calido.onrender.com/api/v1/countries');
+  //   setCountries(res?.data.results?.rows);
+  // };
+  // useEffect(() => {
+  //   fetchUserLocation();
+  //   fetchCountries();
+  // }, []);
+  // const [countries, setCountries] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [countries, setCountries] = useState([]);
   const router = useRouter();
   const [data, setData] = useState({
     firstName: '',
     lastName: '',
-    phone: '',
-    country: '',
-    address: '',
+    // phone: '',
+    // country: '',
+    // address: '',
     mail: '',
     password: '',
   });
-  const { firstName, lastName, phone, country, address, mail, password } = data;
+  const { firstName, lastName, mail, password } = data;
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!mail || !password || !firstName || !phone || !country) {
+    if (!mail || !password || !firstName) {
       toast.error('Please Fill Out All Fields');
       return;
     }
@@ -58,6 +58,7 @@ export default function SignUp() {
       if (error?.response?.status === 400) {
         toast.error('your phone number or email is alread exist change it');
       }
+      console.log(error);
     } finally {
       setLoading(false);
     }
@@ -116,7 +117,7 @@ export default function SignUp() {
               value={password}
               requried='requried'
             />
-            <InputField
+            {/* <InputField
               label='Phone'
               type='text'
               name='phone'
@@ -130,8 +131,8 @@ export default function SignUp() {
               name='address'
               handleChange={handleChange}
               value={address}
-            />{' '}
-            <div className='mb-4'>
+            /> */}
+            {/* <div className='mb-4'>
               <label
                 className='block text-gray-700 font-bold mb-2'
                 htmlFor={country}
@@ -158,7 +159,7 @@ export default function SignUp() {
                   </svg>
                 </div>
               </div>
-            </div>
+            </div> */}
             <button type='submit' className='btn-primary w-full'>
               Sign Up
             </button>
