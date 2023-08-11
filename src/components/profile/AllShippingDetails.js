@@ -42,7 +42,9 @@ export default function AllShippingDetails() {
   }
   return (
     <div className='overflow-x-auto'>
-      <h1 className='text-xl lg:text-2xl font-bold'>All Shipping Details</h1>
+      <h1 className='text-lg md:text-2xl font-bold text-center'>
+        All Shipping Details
+      </h1>
       {/* {shippingData.map((ship) => {
         return (
           <div className='flex items-start gap-5' key={ship.id}>
@@ -68,18 +70,18 @@ export default function AllShippingDetails() {
             {shippingData.map((ship) => {
               return (
                 <tr key={ship.id}>
-                  <td class='py-3 px-4 border-b border-gray-200'>
+                  <td class='text-sm md:text-base py-3 px-2 md:px-4 border-b border-gray-200 whitespace-nowrap'>
                     {ship.country}
                   </td>
-                  <td class='py-3 px-4 border-b border-gray-200'>
+                  <td class='text-sm md:text-base py-3 px-2 md:px-4 border-b border-gray-200 whitespace-nowrap'>
                     {ship.address}
                   </td>
-                  <td class='py-3 px-4 border-b border-gray-200'>
+                  <td class='py-3 px-2 md:px-4 border-b border-gray-200'>
                     <div class='flex justify-end'>
-                      <button class='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 mr-2 rounded'>
+                      <button class='bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 md:py-2 px-2 md:px-4 mr-2 rounded'>
                         Edit
                       </button>
-                      <button class='bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded'>
+                      <button class='bg-red-500 hover:bg-red-700 text-white font-bold py-1 md:py-2 px-2 md:px-4 rounded'>
                         Delete
                       </button>
                     </div>
