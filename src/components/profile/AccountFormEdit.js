@@ -15,12 +15,10 @@ export default function AccountFormEdit() {
     lastName: user?.lastName || '',
     mail: user?.mail || '',
     phone: user?.phone || '',
-    address: user?.address || '',
     old_password: '',
     password: '',
   });
-  const { firstName, lastName, mail, phone, address, old_password, password } =
-    data;
+  const { firstName, lastName, mail, phone, old_password, password } = data;
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!firstName || !mail) {
@@ -64,7 +62,6 @@ export default function AccountFormEdit() {
       lastName: user?.lastName || '',
       mail: user?.mail || '',
       phone: user?.phone || '',
-      address: user?.address || '',
       old_password: '',
       password: '',
     });
@@ -90,7 +87,7 @@ export default function AccountFormEdit() {
       </div>
 
       <InputField
-        label='Email address'
+        label='Email '
         type='email'
         name='mail'
         handleChange={handleChange}
@@ -106,13 +103,6 @@ export default function AccountFormEdit() {
         requried='requried'
       />
 
-      <InputField
-        label='Address'
-        type='text'
-        name='address'
-        handleChange={handleChange}
-        value={address}
-      />
       <div className='mx-0 sm:mx-4'>
         <h2 className='text-lg font-bold '>Password change</h2>
         <div className='mx-0 sm:mx-2 mt-3 sm:mt-5'>
