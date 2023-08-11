@@ -11,6 +11,8 @@ import {
   CALCULATE_TOTALS,
   REMOVE_PRODUCT,
   UPDATE_CARD,
+  CHANGE_SHPPING_DETAIL,
+  CLEAR_SHPPING_DETAIL,
 } from '@/actions/actions';
 import Cookies from 'js-cookie';
 import { toast } from 'react-toastify';
@@ -20,6 +22,8 @@ const intialState = {
   navbar: false,
   filter: false,
   user: {},
+  shippingDetails: {},
+  isEditing: false,
   productsData: [],
   cart: [],
   itemsInCart: [],
@@ -30,12 +34,15 @@ export default function MainProvider({ children }) {
   const [state, dispatch] = useReducer(MainReducer, intialState);
   const token = Cookies.get('calidoUser');
 
+  // Navbar filter Operation
   const detectNavbar = (val) => {
     dispatch({ type: DETECT_NAVBAR, payload: val });
   };
   const detectFilter = (val) => {
     dispatch({ type: DETECT_FILTER, payload: val });
   };
+
+  // User Operation
   const AddUser = (user) => {
     dispatch({ type: ADD_USER, payload: user });
   };
@@ -59,7 +66,16 @@ export default function MainProvider({ children }) {
       console.log(error);
     }
   };
-  // Products
+  // Shipping Operation
+  const editShippingDetails = (shippingdetail) => {
+    dispatch({ type: CHANGE_SHPPING_DETAIL, payload: shippingdetail });
+  };
+  // Clear Shipping Operation
+  const clearShippingDetails = (shippingdetail) => {
+    dispatch({ type: CLEAR_SHPPING_DETAIL });
+  };
+
+  // Products Operation
   const addProduct = (id) => {
     dispatch({ type: ADD_PRODUCT, payload: id });
   };
@@ -69,6 +85,7 @@ export default function MainProvider({ children }) {
   const updateCart = (id, amount) => {
     dispatch({ type: UPDATE_CARD, payload: id, payload2: amount });
   };
+
   useEffect(() => {
     UpdateUserContext();
   }, []);
@@ -77,7 +94,15 @@ export default function MainProvider({ children }) {
   }, [state.cart]);
   return (
     <MainContext.Provider
-      value={{ ...state, detectNavbar, AddUser, removeUser, detectFilter }}
+      value={{
+        ...state,
+        detectNavbar,
+        AddUser,
+        removeUser,
+        detectFilter,
+        editShippingDetails,
+        clearShippingDetails,
+      }}
     >
       {children}
     </MainContext.Provider>

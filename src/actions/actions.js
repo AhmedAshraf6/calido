@@ -8,6 +8,10 @@ export const CALCULATE_TOTALS = 'CALCULATE_TOTALS';
 export const ADD_USER = 'ADD_USER';
 export const REMOVE_USER = 'REMOVE_USER';
 
+// Shipping Details
+export const CHANGE_SHPPING_DETAIL = 'CHANGE_SHPPING_DETAIL';
+export const CLEAR_SHPPING_DETAIL = 'CLEAR_SHPPING_DETAIL';
+
 // Filters
 export const SHOW_LOADING_FILTER = 'SHOW_LOADING_FILTER';
 export const GET_FILTERED_ERROR = 'GET_FILTERED_ERROR';

@@ -1,5 +1,7 @@
 import {
   ADD_USER,
+  CHANGE_SHPPING_DETAIL,
+  CLEAR_SHPPING_DETAIL,
   DETECT_FILTER,
   DETECT_NAVBAR,
   REMOVE_USER,
@@ -17,6 +19,15 @@ export default function MainReducer(state, action) {
   }
   if (action.type === REMOVE_USER) {
     return { ...state, user: {} };
+  }
+  // Shipping detail
+  if (action.type === CHANGE_SHPPING_DETAIL) {
+    const { id, country, address } = action.payload;
+    return { ...state, shippingDetails: action.payload, isEditing: true };
+  }
+  if (action.type === CLEAR_SHPPING_DETAIL) {
+    return { ...state, shippingDetails: {}, isEditing: false };
+    // console.log(action.payload);
   }
   // Products
   // if (action.type === ADD_PRODUCT) {

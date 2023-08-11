@@ -4,35 +4,35 @@ import { BaseUrl } from '@/util/constants';
 import Cookies from 'js-cookie';
 import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
-import Loading from '../shared-component/Loading';
+import { useMainContext } from '@/contexts/MainContext';
 
-export default function AllShippingDetails() {
+export default function AllShippingDetails({
+  getShippingDetails,
+  shippingData,
+}) {
+  const { editShippingDetails } = useMainContext();
   const token = Cookies.get('calidoUser');
-  const [loading, setLoading] = useState(false);
-  const [shippingData, setShippingData] = useState([]);
-  const getShippingDetails = async () => {
-    setLoading(true);
+
+  useEffect(() => {
+    getShippingDetails();
+  }, []);
+  const deleteShippingDetails = async (id) => {
     try {
-      const response = await customFetch('/shippingDetails', {
+      const response = await customFetch.delete(`/shippingDetails/${id}`, {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
         },
       });
-      setShippingData(response?.data?.results?.rows);
+      toast.success('Deleted succesfully');
+      console.log(response);
     } catch (error) {
       toast.error(error.message);
-    } finally {
-      setLoading(false);
+      console.log(error);
     }
-  };
-  useEffect(() => {
     getShippingDetails();
-  }, []);
-  console.log(shippingData);
-  if (loading) {
-    return <Loading />;
-  }
+  };
+
   if (shippingData.length === 0) {
     return (
       <h1 className='text-xl lg:text-2xl font-bold'>
@@ -45,43 +45,47 @@ export default function AllShippingDetails() {
       <h1 className='text-lg md:text-2xl font-bold text-center'>
         All Shipping Details
       </h1>
-      {/* {shippingData.map((ship) => {
-        return (
-          <div className='flex items-start gap-5' key={ship.id}>
-            <h3 className='text-md '>
-              Country: <span className='font-semibold'>{ship.country}</span>
-            </h3>
-            <h3 className='text-md '>
-              Address:<span className='font-semibold'> {ship.address}</span>
-            </h3>
-          </div>
-        );
-      })} */}
-      <div class='w-full '>
-        <table class='min-w-full bg-white'>
+
+      <div className='w-full '>
+        <table className='min-w-full bg-white '>
           <thead>
             <tr>
-              <th class='py-3 px-4 border-b border-gray-200'>Country</th>
-              <th class='py-3 px-4 border-b border-gray-200'>Address</th>
-              <th class='py-3 px-4 border-b border-gray-200'>Actions</th>
+              <th className='py-3  text-start border-b border-gray-200'>
+                Country
+              </th>
+              <th className='py-3   text-start border-b border-gray-200'>
+                Address
+              </th>
+              <th className='py-3   text-center border-b border-gray-200'>
+                Actions
+              </th>
             </tr>
           </thead>
           <tbody>
             {shippingData.map((ship) => {
+              const { id, country, address } = ship;
               return (
-                <tr key={ship.id}>
-                  <td class='text-sm md:text-base py-3 px-2 md:px-4 border-b border-gray-200 whitespace-nowrap'>
-                    {ship.country}
+                <tr key={id}>
+                  <td className='text-sm md:text-base py-3 px-2 md:px-4 border-b border-gray-200 whitespace-nowrap'>
+                    {country}
                   </td>
-                  <td class='text-sm md:text-base py-3 px-2 md:px-4 border-b border-gray-200 whitespace-nowrap'>
-                    {ship.address}
+                  <td className='text-sm md:text-base py-3 px-2 md:px-4 border-b border-gray-200 whitespace-nowrap'>
+                    {address}
                   </td>
-                  <td class='py-3 px-2 md:px-4 border-b border-gray-200'>
-                    <div class='flex justify-end'>
-                      <button class='bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 md:py-2 px-2 md:px-4 mr-2 rounded'>
+                  <td className='py-3 px-2 md:px-4 border-b border-gray-200'>
+                    <div className='flex justify-end'>
+                      <button
+                        className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 md:py-2 px-2 md:px-4 mr-2 rounded'
+                        onClick={() =>
+                          editShippingDetails({ id, country, address })
+                        }
+                      >
                         Edit
                       </button>
-                      <button class='bg-red-500 hover:bg-red-700 text-white font-bold py-1 md:py-2 px-2 md:px-4 rounded'>
+                      <button
+                        className='bg-red-500 hover:bg-red-700 text-white font-bold py-1 md:py-2 px-2 md:px-4 rounded'
+                        onClick={() => deleteShippingDetails(id)}
+                      >
                         Delete
                       </button>
                     </div>

@@ -4,13 +4,14 @@ import InputField from '../shared-component/InputField';
 import Cookies from 'js-cookie';
 import customFetch from '@/util/axios';
 import { toast } from 'react-toastify';
+import { useMainContext } from '@/contexts/MainContext';
 
-export default function AddShippingForm() {
+export default function AddShippingForm({ getShippingDetails }) {
   const token = Cookies.get('calidoUser');
-
+  const { shippingDetails, clearShippingDetails, isEditing } = useMainContext();
   const [data, setData] = useState({
     address: '',
-    country: '',
+    country: 'Saudi Arabia',
     countries: [],
   });
   const fetchCountries = async () => {
@@ -19,7 +20,6 @@ export default function AddShippingForm() {
       setData({
         ...data,
         countries: res?.data.results?.rows,
-        country: res?.data.results?.rows[0].name,
       });
     } catch (error) {
       toast.error(error.message);
@@ -28,14 +28,17 @@ export default function AddShippingForm() {
   useEffect(() => {
     fetchCountries();
   }, []);
+  useEffect(() => {
+    setData({
+      ...data,
+      address: shippingDetails?.address,
+      country: shippingDetails?.country,
+    });
+  }, [shippingDetails]);
   const { country, address, countries } = data;
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!address) {
-      toast.error('Please Fill required fields');
-      return;
-    }
 
+  // Add Shipping detail
+  const AddShippingDetailFunc = async () => {
     try {
       const response = await customFetch.post('/shippingDetails', data, {
         headers: {
@@ -48,6 +51,42 @@ export default function AddShippingForm() {
     } catch (error) {
       toast.error(error.message);
       console.log(error);
+    }
+    getShippingDetails();
+  };
+  // Edit Shipping detail
+  const EditShippingDetailFunc = async () => {
+    try {
+      const response = await customFetch.put(
+        `/shippingDetails/${shippingDetails.id}`,
+        data,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      toast.success('Editted succesfully');
+      console.log(response);
+    } catch (error) {
+      toast.error(error.message);
+      console.log(error);
+    }
+    getShippingDetails();
+    clearShippingDetails();
+    setData({ ...data, address: '', country: 'Saudi Arabia' });
+  };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!address) {
+      toast.error('Please Fill required fields');
+      return;
+    }
+    if (isEditing) {
+      EditShippingDetailFunc();
+    } else {
+      AddShippingDetailFunc();
     }
     return;
   };
@@ -67,6 +106,7 @@ export default function AddShippingForm() {
         name='address'
         handleChange={handleChange}
         value={address}
+        requried='required'
       />
       <div className='mb-4'>
         <label className='block text-gray-700 font-bold mb-2' htmlFor={country}>
@@ -78,7 +118,7 @@ export default function AddShippingForm() {
             name='country'
             onChange={handleChange}
             required
-            defaultValue={country}
+            value={country}
           >
             {countries?.map((country) => (
               <option key={country.id} value={country.name}>
@@ -94,7 +134,7 @@ export default function AddShippingForm() {
         </div>
       </div>
       <button type='submit' className='btn-primary self-start'>
-        Add
+        {isEditing ? 'Edit' : 'Add'}
       </button>
     </form>
   );

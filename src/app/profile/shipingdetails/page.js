@@ -1,11 +1,33 @@
+'use client';
 import AccountFormEdit from '@/components/profile/AccountFormEdit';
 import HeroLanding from '@/components/shared-component/HeroLandingWithoutImage';
 import ProfileLinksContainer from '@/components/profile/ProfileLinksContainer';
-import React from 'react';
+import React, { useState } from 'react';
 import AllShippingDetails from '@/components/profile/AllShippingDetails';
 import AddShippingForm from '@/components/profile/AddShippingForm';
+import customFetch from '@/util/axios';
+import { toast } from 'react-toastify';
+import Cookies from 'js-cookie';
 
-export default function page() {
+export default function ShippingDetails() {
+  const token = Cookies.get('calidoUser');
+
+  // const [loading, setLoading] = useState(false);
+  const [shippingData, setShippingData] = useState([]);
+  const getShippingDetails = async () => {
+    // setLoading(true);
+    try {
+      const response = await customFetch('/shippingDetails', {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setShippingData(response?.data?.results?.rows);
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
   return (
     <>
       <HeroLanding title='My Account' />
@@ -16,9 +38,12 @@ export default function page() {
               <ProfileLinksContainer />
             </div>
             <div className='col-span-3 md:col-span-2'>
-              <div className='grid grid-cols-1 xl:grid-cols-2 gap-5'>
-                <AllShippingDetails />
-                <AddShippingForm />
+              <div className='grid grid-cols-1  gap-5'>
+                <AllShippingDetails
+                  getShippingDetails={getShippingDetails}
+                  shippingData={shippingData}
+                />
+                <AddShippingForm getShippingDetails={getShippingDetails} />
               </div>
             </div>
           </div>
