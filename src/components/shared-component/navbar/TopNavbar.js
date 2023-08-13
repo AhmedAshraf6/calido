@@ -34,11 +34,11 @@ export default function TopNavbar() {
 
           <Link href='/' className='col-span-3 lg:col-span-2 '>
             <Image
-              src='/log.png'
+              src='/logo.png'
               width={60}
               height={60}
               alt='logo-prolighthub'
-              className='max-w-full object-contain w-[40px] lg:w-[60px] h-auto'
+              className='max-w-full object-contain w-[80px] lg:w-[120px] h-auto'
             />
           </Link>
 

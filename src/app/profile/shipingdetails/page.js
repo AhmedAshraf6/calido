@@ -15,7 +15,6 @@ export default function ShippingDetails() {
   // const [loading, setLoading] = useState(false);
   const [shippingData, setShippingData] = useState([]);
   const getShippingDetails = async () => {
-    // setLoading(true);
     try {
       const response = await customFetch('/shippingDetails', {
         headers: {
