@@ -4,6 +4,7 @@ import {
   CLEAR_SHPPING_DETAIL,
   DETECT_FILTER,
   DETECT_NAVBAR,
+  HANDLE_CHANGE_SHIPPING,
   REMOVE_USER,
 } from '@/actions/actions';
 
@@ -26,8 +27,19 @@ export default function MainReducer(state, action) {
     return { ...state, shippingDetails: action.payload, isEditing: true };
   }
   if (action.type === CLEAR_SHPPING_DETAIL) {
-    return { ...state, shippingDetails: {}, isEditing: false };
+    return {
+      ...state,
+      shippingDetails: { address: '', country: '' },
+      isEditing: false,
+    };
     // console.log(action.payload);
+  }
+  if (action.type === HANDLE_CHANGE_SHIPPING) {
+    const { name, value } = action.payload;
+    return {
+      ...state,
+      shippingDetails: { ...state.shippingDetails, [name]: value },
+    };
   }
   // Products
   // if (action.type === ADD_PRODUCT) {

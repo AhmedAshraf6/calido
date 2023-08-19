@@ -8,19 +8,18 @@ import { useMainContext } from '@/contexts/MainContext';
 
 export default function AddShippingForm({ getShippingDetails }) {
   const token = Cookies.get('calidoUser');
-  const { shippingDetails, clearShippingDetails, isEditing } = useMainContext();
-  const [data, setData] = useState({
-    address: '',
-    country: 'Saudi Arabia',
-    countries: [],
-  });
+  const {
+    shippingDetails,
+    handleChangeShipping,
+    clearShippingDetails,
+    isEditing,
+  } = useMainContext();
+  const [countries, setCountries] = useState([]);
   const fetchCountries = async () => {
     try {
       const res = await customFetch('countries');
-      setData({
-        ...data,
-        countries: res?.data.results?.rows,
-      });
+
+      setCountries(() => res?.data.results?.rows);
     } catch (error) {
       toast.error(error.message);
     }
@@ -28,24 +27,20 @@ export default function AddShippingForm({ getShippingDetails }) {
   useEffect(() => {
     fetchCountries();
   }, []);
-  useEffect(() => {
-    setData({
-      ...data,
-      address: shippingDetails?.address,
-      country: shippingDetails?.country,
-    });
-  }, [shippingDetails]);
-  const { country, address, countries } = data;
 
   // Add Shipping detail
   const AddShippingDetailFunc = async () => {
     try {
-      const response = await customFetch.post('/shippingDetails', data, {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await customFetch.post(
+        '/shippingDetails',
+        shippingDetails,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       toast.success('Added succesfully');
       console.log(response);
     } catch (error) {
@@ -53,13 +48,14 @@ export default function AddShippingForm({ getShippingDetails }) {
       console.log(error);
     }
     getShippingDetails();
+    clearShippingDetails();
   };
   // Edit Shipping detail
   const EditShippingDetailFunc = async () => {
     try {
       const response = await customFetch.put(
         `/shippingDetails/${shippingDetails.id}`,
-        data,
+        shippingDetails,
         {
           headers: {
             'Content-Type': 'application/json',
@@ -75,11 +71,10 @@ export default function AddShippingForm({ getShippingDetails }) {
     }
     getShippingDetails();
     clearShippingDetails();
-    setData({ ...data, address: '', country: 'Saudi Arabia' });
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!address) {
+    if (!shippingDetails?.address || !shippingDetails?.country) {
       toast.error('Please Fill required fields');
       return;
     }
@@ -93,7 +88,7 @@ export default function AddShippingForm({ getShippingDetails }) {
   const handleChange = (e) => {
     const name = e.target.name;
     const value = e.target.value;
-    setData({ ...data, [name]: value });
+    handleChangeShipping({ name, value });
   };
   return (
     <form
@@ -105,11 +100,14 @@ export default function AddShippingForm({ getShippingDetails }) {
         type='text'
         name='address'
         handleChange={handleChange}
-        value={address}
+        value={shippingDetails?.address}
         requried='required'
       />
       <div className='mb-4'>
-        <label className='block text-gray-700 font-bold mb-2' htmlFor={country}>
+        <label
+          className='block text-gray-700 font-bold mb-2'
+          htmlFor={shippingDetails?.country}
+        >
           Country <span className='text-[#ff000080] text-lg'>*</span>
         </label>
         <div className='relative '>
@@ -118,8 +116,9 @@ export default function AddShippingForm({ getShippingDetails }) {
             name='country'
             onChange={handleChange}
             required
-            value={country}
+            value={shippingDetails?.country}
           >
+            <option>Choose Country</option>
             {countries?.map((country) => (
               <option key={country.id} value={country.name}>
                 {country.name}

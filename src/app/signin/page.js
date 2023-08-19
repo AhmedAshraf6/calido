@@ -38,7 +38,11 @@ export default function SignIn() {
         expires: 1,
         secure: true,
       });
-      AddUser(response?.data?.user);
+      const newData = {
+        ...response?.data?.user,
+        phoneNumber: response?.data?.phoneNumber[0],
+      };
+      AddUser(newData);
       toast.success('Login success');
       router.push('/profile');
     } catch (error) {

@@ -13,6 +13,7 @@ import {
   UPDATE_CARD,
   CHANGE_SHPPING_DETAIL,
   CLEAR_SHPPING_DETAIL,
+  HANDLE_CHANGE_SHIPPING,
 } from '@/actions/actions';
 import Cookies from 'js-cookie';
 import { toast } from 'react-toastify';
@@ -22,7 +23,10 @@ const intialState = {
   navbar: false,
   filter: false,
   user: {},
-  shippingDetails: {},
+  shippingDetails: {
+    address: '',
+    country: '',
+  },
   isEditing: false,
   productsData: [],
   cart: [],
@@ -41,7 +45,9 @@ export default function MainProvider({ children }) {
   const detectFilter = (val) => {
     dispatch({ type: DETECT_FILTER, payload: val });
   };
-
+  const handleChangeShipping = (data) => {
+    dispatch({ type: HANDLE_CHANGE_SHIPPING, payload: data });
+  };
   // User Operation
   const AddUser = (user) => {
     dispatch({ type: ADD_USER, payload: user });
@@ -60,7 +66,12 @@ export default function MainProvider({ children }) {
           Authorization: `Bearer ${token}`,
         },
       });
-      AddUser(response?.data?.user);
+      const newData = {
+        ...response?.data?.user,
+        phoneNumber: response?.data?.phoneNumber[0],
+      };
+      AddUser(newData);
+      console.log(response?.data);
     } catch (error) {
       toast.error('something wrong try again');
       console.log(error);
@@ -71,7 +82,7 @@ export default function MainProvider({ children }) {
     dispatch({ type: CHANGE_SHPPING_DETAIL, payload: shippingdetail });
   };
   // Clear Shipping Operation
-  const clearShippingDetails = (shippingdetail) => {
+  const clearShippingDetails = () => {
     dispatch({ type: CLEAR_SHPPING_DETAIL });
   };
 
@@ -102,6 +113,7 @@ export default function MainProvider({ children }) {
         detectFilter,
         editShippingDetails,
         clearShippingDetails,
+        handleChangeShipping,
       }}
     >
       {children}

@@ -14,7 +14,7 @@ export default function AccountFormEdit() {
     firstName: user?.firstName || '',
     lastName: user?.lastName || '',
     mail: user?.mail || '',
-    phone: user?.phone || '',
+    phone: user?.phoneNumber?.phone || '',
     old_password: '',
     password: '',
   });
@@ -25,24 +25,32 @@ export default function AccountFormEdit() {
       toast.error('Please Fill required fields');
       return;
     }
-    // if (old_password || password || confirmnewpass) {
-    //   if (!old_password || !password || !confirmnewpass) {
-    //     toast.error('Please Fill Out all password fields');
-    //     return;
-    //   }
-    //   if (password !== confirmnewpass) {
-    //     toast.error('newpassword shouid be the same with confirm new password');
-    //     return;
-    //   }
-    // }
-    console.log(data);
+    if (old_password || password) {
+      if (!old_password || !password) {
+        toast.error('Please Fill Out all password fields');
+        return;
+      }
+    }
+    let newData = data;
+    if (!password) {
+      delete newData.old_password;
+      delete newData.password;
+    }
     try {
-      const response = await customFetch.put('/users/me', data, {
+      const response = await customFetch.put('/users/me', newData, {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
         },
       });
+      if (phone) {
+        if (user?.phoneNumber?.phone) {
+          editPhone();
+        } else {
+          addPhone();
+        }
+        return;
+      }
       toast.success('your data updated succesfully');
       console.log(response);
     } catch (error) {
@@ -51,6 +59,56 @@ export default function AccountFormEdit() {
     }
     return;
   };
+  const addPhone = async () => {
+    try {
+      const response = await customFetch.post(
+        '/phone',
+        { phone },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      toast.success('your data updated succesfully and phone addedd');
+    } catch (error) {
+      toast.error(error.message);
+      console.log(error);
+    }
+  };
+  const editPhone = async () => {
+    try {
+      const response = await customFetch.put(
+        `/phone/${user.phoneNumber.id}`,
+        { phone },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      toast.success('your data updated succesfully and phone editted');
+    } catch (error) {
+      toast.error(error.message);
+      console.log(error);
+    }
+  };
+  // const getPhone = async () => {
+  //   try {
+  //     const response = await customFetch('/phone', {
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //         Authorization: `Bearer ${token}`,
+  //       },
+  //     });
+  //     console.log(response);
+  //   } catch (error) {
+  //     toast.error(error.message);
+  //     console.log(error);
+  //   }
+  // };
   const handleChange = (e) => {
     const name = e.target.name;
     const value = e.target.value;
@@ -61,7 +119,7 @@ export default function AccountFormEdit() {
       firstName: user?.firstName || '',
       lastName: user?.lastName || '',
       mail: user?.mail || '',
-      phone: user?.phone || '',
+      phone: user?.phoneNumber?.phone || '',
       old_password: '',
       password: '',
     });
