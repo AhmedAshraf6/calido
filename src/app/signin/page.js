@@ -38,10 +38,10 @@ export default function SignIn() {
         secure: true,
       });
       console.log(response);
-      const newData = {
-        ...response?.data?.user,
-        phoneNumber: response?.data?.phoneNumber[0],
-      };
+      // const newData = {
+      //   ...response?.data?.user,
+      //   phoneNumber: response?.data?.phoneNumber[0],
+      // };
       console.log(response);
       AddUser(response?.data?.user);
       toast.success('Login success');

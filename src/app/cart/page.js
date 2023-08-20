@@ -6,7 +6,7 @@ import { useMainContext } from '@/contexts/MainContext';
 import Link from 'next/link';
 import React from 'react';
 
-export default function page() {
+export default function Cart() {
   const { total_amount } = useMainContext();
   return (
     <div className='min-h-[40vh]'>

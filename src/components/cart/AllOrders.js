@@ -60,7 +60,7 @@ export default function AllOrders() {
                     </span>
                     <MdDelete
                       className='text-secondary text-lg sm:text-xl cursor-pointer'
-                      onClick={() => removeFromCart}
+                      onClick={() => removeFromCart(product.id)}
                     />
                   </div>
                 </td>
@@ -110,7 +110,10 @@ export default function AllOrders() {
                         {product?.price}Egp
                       </span>
                     </div>
-                    <MdDelete className='text-secondary text-lg sm:text-xl cursor-pointer ' />
+                    <MdDelete
+                      className='text-secondary text-lg sm:text-xl cursor-pointer '
+                      onClick={() => removeFromCart(product.id)}
+                    />
                   </div>
                 </div>
               </div>

@@ -64,7 +64,9 @@ export default async function Home() {
 
               <div className='grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4  gap-5 py-3 mt-3 sm:mt-6'>
                 {category?.products.map((product) => {
-                  return <Product {...product} key={product.id} />;
+                  return (
+                    <Product {...product} key={product.id} product={product} />
+                  );
                 })}
               </div>
             </div>
