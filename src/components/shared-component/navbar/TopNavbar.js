@@ -12,7 +12,7 @@ import SearchInput from './SearchInput';
 import Cookies from 'js-cookie';
 
 export default function TopNavbar() {
-  const { detectNavbar } = useMainContext();
+  const { detectNavbar, total_items } = useMainContext();
   const [isClient, setIsClient] = useState(false);
   const token = Cookies.get('calidoUser');
   useEffect(() => {
@@ -75,7 +75,7 @@ export default function TopNavbar() {
             )}
 
             <Link href='/cart'>
-              <CartButton count='1' />
+              <CartButton count={total_items} />
             </Link>
           </div>
           {/* <SearchInput /> */}

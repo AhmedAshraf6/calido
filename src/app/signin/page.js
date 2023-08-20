@@ -33,20 +33,22 @@ export default function SignIn() {
           'Content-Type': 'application/json',
         },
       });
-      // console.log(response);
       Cookies.set('calidoUser', response?.data?.token, {
         expires: 1,
         secure: true,
       });
+      console.log(response);
       const newData = {
         ...response?.data?.user,
         phoneNumber: response?.data?.phoneNumber[0],
       };
-      AddUser(newData);
+      console.log(response);
+      AddUser(response?.data?.user);
       toast.success('Login success');
       router.push('/profile');
     } catch (error) {
       toast.error(error.message);
+      console.log(error);
     } finally {
       setLoading(false);
     }

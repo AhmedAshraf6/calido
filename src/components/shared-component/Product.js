@@ -3,10 +3,10 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { StarRating } from '@/components/shared-component/StarRating';
 import { FaStar } from 'react-icons/fa';
-export default function Product({ name_en, price, newPrice, sale }) {
+export default function Product({ name_en, id, price, newPrice, sale }) {
   return (
     <div className='cursor-pointer  sm:hover:shadow-slate-400 sm:shadow-md rounded-lg sm:border sm:border-gray-200 transition-shadow duration-200 group flex flex-col items-start relative'>
-      <Link href={`/singleitem/asd`} aria-label='redirect to shop page'>
+      <Link href={`/singleitem/${id}`} aria-label='redirect to shop page'>
         <Image
           src='/image-2.png'
           width={500}
