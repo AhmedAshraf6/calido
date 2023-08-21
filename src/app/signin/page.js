@@ -42,7 +42,7 @@ export default function SignIn() {
       //   ...response?.data?.user,
       //   phoneNumber: response?.data?.phoneNumber[0],
       // };
-      console.log(response);
+      console.log(response)
       AddUser(response?.data?.user);
       toast.success('Login success');
       router.push('/profile');
