@@ -9,7 +9,7 @@ export default function AllOrders() {
   return (
     <section>
       {/* Desktop */}
-      <table className='w-full'>
+      <table className='hidden md:block w-full'>
         <thead className='whitespace-nowrap border-b-2 border-gray-200 '>
           <tr>
             <th className='px-4 pb-4 text-left'>Order</th>
@@ -75,9 +75,9 @@ export default function AllOrders() {
           Product
         </h2>
         <div className='flex flex-col mt-3 gap-5'>
-          {/* {cart?.map((product) => {
+          {cart?.map((product) => {
             return (
-              <div className='flex items-center gap-4 w-full'>
+              <div key={product.id} className='flex items-center gap-4 w-full'>
                 <Image
                   src='/image-1.png'
                   width='100'
@@ -85,7 +85,7 @@ export default function AllOrders() {
                   className='object-contain'
                 />
                 <div className='flex flex-col gap-3 w-full'>
-                  <span>{product?.name}</span>
+                  <span>{product.name}</span>
                   <div className='flex justify-between items-center'>
                     <div className='flex gap-2 sm:gap-3 items-center'>
                       <div className='flex items-center gap-4'>
@@ -97,7 +97,7 @@ export default function AllOrders() {
                         </button>
 
                         <span className='text-center text-xl '>
-                          {product?.amount}
+                          {product.amount}
                         </span>
                         <button
                           className='  text-gray-700 rounded-sm flex justify-center items-center w-5 hover:bg-primary smooth text-lg'
@@ -107,7 +107,7 @@ export default function AllOrders() {
                         </button>
                       </div>
                       <span className='text-base sm:text-lg text-secondary'>
-                        {product?.price}Egp
+                        {product.price}Egp
                       </span>
                     </div>
                     <MdDelete
@@ -118,7 +118,7 @@ export default function AllOrders() {
                 </div>
               </div>
             );
-          })} */}
+          })}
         </div>
       </div>
     </section>
