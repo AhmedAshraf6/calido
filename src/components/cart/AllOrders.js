@@ -75,7 +75,7 @@ export default function AllOrders() {
           Product
         </h2>
         <div className='flex flex-col mt-3 gap-5'>
-          {cart?.map((product) => {
+          {/* {cart?.map((product) => {
             return (
               <div className='flex items-center gap-4 w-full'>
                 <Image
@@ -118,7 +118,7 @@ export default function AllOrders() {
                 </div>
               </div>
             );
-          })}
+          })} */}
         </div>
       </div>
     </section>
