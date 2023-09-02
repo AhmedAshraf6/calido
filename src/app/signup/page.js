@@ -56,7 +56,7 @@ export default function SignUp() {
       router.push('/signin');
     } catch (error) {
       if (error?.response?.status === 400) {
-        toast.error('your phone number or email is alread exist change it');
+        toast.error('your  email is alread exist change it');
       }
       console.log(error);
     } finally {
