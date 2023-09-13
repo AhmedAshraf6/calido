@@ -1,8 +1,7 @@
 'use client';
 import React, { useState } from 'react';
 import { FaStar } from 'react-icons/fa';
-export const StarRating = () => {
-  const [rating, setRating] = useState(null);
+export const StarRating = ({ rate, setRate }) => {
   const [hover, setHover] = useState(null);
   return (
     <div className='flex rating-star'>
@@ -15,13 +14,13 @@ export const StarRating = () => {
               name='rating'
               className='star-rating-radio d-none'
               value={ratingValue}
-              onClick={() => setRating(ratingValue)}
+              onClick={() => setRate(ratingValue)}
               onMouseOver={() => setHover(() => ratingValue)}
               onMouseOut={() => setHover(null)}
             />
             <FaStar
               className={`text-xl star cursor-pointer ${
-                ratingValue <= (hover || rating)
+                ratingValue <= (hover || rate)
                   ? 'text-primary'
                   : 'text-[#e4e5e9]'
               }`}

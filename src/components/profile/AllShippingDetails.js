@@ -5,10 +5,12 @@ import Cookies from 'js-cookie';
 import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { useMainContext } from '@/contexts/MainContext';
+import Loading from '../shared-component/Loading';
 
 export default function AllShippingDetails({
   getShippingDetails,
   shippingData,
+  loading,
 }) {
   const { editShippingDetails } = useMainContext();
   const token = Cookies.get('calidoUser');
@@ -32,7 +34,9 @@ export default function AllShippingDetails({
     }
     getShippingDetails();
   };
-
+  if (loading) {
+    return <Loading />;
+  }
   if (shippingData.length === 0) {
     return (
       <h1 className='text-xl lg:text-2xl font-bold'>

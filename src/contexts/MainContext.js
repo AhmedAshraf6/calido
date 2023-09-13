@@ -73,7 +73,6 @@ export default function MainProvider({ children }) {
         phoneNumber: response?.data?.phoneNumber[0],
       };
       AddUser(newData);
-      console.log(response);
     } catch (error) {
       toast.error('something wrong try again');
       console.log(error);

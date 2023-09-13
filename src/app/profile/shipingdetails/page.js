@@ -8,13 +8,15 @@ import AddShippingForm from '@/components/profile/AddShippingForm';
 import customFetch from '@/util/axios';
 import { toast } from 'react-toastify';
 import Cookies from 'js-cookie';
+import Loading from '@/components/shared-component/Loading';
 
 export default function ShippingDetails() {
   const token = Cookies.get('calidoUser');
 
-  // const [loading, setLoading] = useState(false);
   const [shippingData, setShippingData] = useState([]);
+  const [loading, setLoading] = useState(false);
   const getShippingDetails = async () => {
+    setLoading(true);
     try {
       const response = await customFetch('/shippingDetails', {
         headers: {
@@ -25,8 +27,11 @@ export default function ShippingDetails() {
       setShippingData(response?.data?.results?.rows);
     } catch (error) {
       toast.error(error.message);
+    } finally {
+      setLoading(false);
     }
   };
+
   return (
     <>
       <HeroLanding title='My Account' />
@@ -41,6 +46,7 @@ export default function ShippingDetails() {
                 <AllShippingDetails
                   getShippingDetails={getShippingDetails}
                   shippingData={shippingData}
+                  loading={loading}
                 />
                 <AddShippingForm getShippingDetails={getShippingDetails} />
               </div>

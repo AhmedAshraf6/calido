@@ -6,7 +6,7 @@ import { useMainContext } from '@/contexts/MainContext';
 export default function AddToCart({ product }) {
   const [amount, setAmount] = useState(1);
   const { addToCart } = useMainContext();
-  console.log(product);
+
   const increase = () => {
     setAmount((oldAmount) => {
       let tempAmount = oldAmount + 1;

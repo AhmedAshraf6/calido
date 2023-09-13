@@ -12,7 +12,6 @@ async function getProduct(productID) {
 export default async function page({ params }) {
   const productId = params.id;
   const { product } = await getProduct(productId);
-  console.log(product);
   const images = [
     'https://images.pexels.com/photos/132340/pexels-photo-132340.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
     'https://images.pexels.com/photos/1036936/pexels-photo-1036936.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
@@ -29,11 +28,9 @@ export default async function page({ params }) {
         </div>
         <div className='flex justify-center gap-4 border-b-2 border-gray-200 mt-8 sm:mt-24'>
           <LinkComponent href={`/singleitem/${product?.id}`}>
-            {' '}
             Description
           </LinkComponent>
           <LinkComponent href={`/reviewitem/${product?.id}`}>
-            {' '}
             Review(0)
           </LinkComponent>
         </div>

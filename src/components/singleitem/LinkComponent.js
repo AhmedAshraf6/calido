@@ -7,6 +7,7 @@ export default function LinkComponent({ href, children }) {
   const pathname = usePathname();
   const isActive = pathname === href;
   const activeClass = isActive ? 'border-b-4 border-primary' : '';
+
   return (
     <Link
       href={href}
