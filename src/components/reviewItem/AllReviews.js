@@ -85,7 +85,7 @@ export default function AllReviews({ productid }) {
                 <div className='flex flex-col gap-y-3 sm:gap-y-5 w-full'>
                   <div className='flex justify-between items-center flex-wrap'>
                     <h1 className='text-sm sm:text-lg font-semibold'>
-                      Ahmed
+                      {review?.User?.firstName}
                       <span className='text-base text-secondary'>
                         / {review?.createdAt.split(' ')[0]}
                       </span>
