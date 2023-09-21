@@ -3,11 +3,11 @@ import React, { useEffect, useState } from 'react';
 import InputField from '@/components/shared-component/InputField';
 import { toast } from 'react-toastify';
 import { useMainContext } from '@/contexts/MainContext';
-import customFetch from '@/util/axios';
+import customFetch, { checkForUnauthorizedResponse } from '@/util/axios';
 import Cookies from 'js-cookie';
 
 export default function AccountFormEdit() {
-  const { user } = useMainContext();
+  const { user, removeUser } = useMainContext();
   const token = Cookies.get('calidoUser');
 
   const [data, setData] = useState({
@@ -37,12 +37,7 @@ export default function AccountFormEdit() {
       delete newData.password;
     }
     try {
-      const response = await customFetch.put('/users/me', newData, {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await customFetch.put('/users/me', newData);
       if (phone) {
         if (user?.phoneNumber?.phone) {
           editPhone();
@@ -54,45 +49,26 @@ export default function AccountFormEdit() {
       toast.success('your data updated succesfully');
       console.log(response);
     } catch (error) {
-      toast.error(error.message);
-      console.log(error);
+      checkForUnauthorizedResponse(error, removeUser);
     }
     return;
   };
   const addPhone = async () => {
     try {
-      const response = await customFetch.post(
-        '/phone',
-        { phone },
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await customFetch.post('/phone', { phone });
       toast.success('your data updated succesfully and phone addedd');
     } catch (error) {
-      toast.error(error.message);
-      console.log(error);
+      checkForUnauthorizedResponse(error, removeUser);
     }
   };
   const editPhone = async () => {
     try {
-      const response = await customFetch.put(
-        `/phone/${user.phoneNumber.id}`,
-        { phone },
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await customFetch.put(`/phone/${user.phoneNumber.id}`, {
+        phone,
+      });
       toast.success('your data updated succesfully and phone editted');
     } catch (error) {
-      toast.error(error.message);
-      console.log(error);
+      checkForUnauthorizedResponse(error, removeUser);
     }
   };
   // const getPhone = async () => {

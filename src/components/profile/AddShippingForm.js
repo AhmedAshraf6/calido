@@ -2,7 +2,10 @@
 import React, { useEffect, useState } from 'react';
 import InputField from '../shared-component/InputField';
 import Cookies from 'js-cookie';
-import customFetch from '@/util/axios';
+import customFetch, {
+  checkForUnauthorizedResponse,
+  customFetchNoUser,
+} from '@/util/axios';
 import { toast } from 'react-toastify';
 import { useMainContext } from '@/contexts/MainContext';
 
@@ -13,15 +16,16 @@ export default function AddShippingForm({ getShippingDetails }) {
     handleChangeShipping,
     clearShippingDetails,
     isEditing,
+    removeUser,
   } = useMainContext();
   const [countries, setCountries] = useState([]);
   const fetchCountries = async () => {
     try {
-      const res = await customFetch('countries');
+      const res = await customFetchNoUser('countries');
 
       setCountries(() => res?.data.results?.rows);
     } catch (error) {
-      toast.error(error.message);
+      checkForUnauthorizedResponse(error, removeUser);
     }
   };
   useEffect(() => {
@@ -33,19 +37,12 @@ export default function AddShippingForm({ getShippingDetails }) {
     try {
       const response = await customFetch.post(
         '/shippingDetails',
-        shippingDetails,
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
-          },
-        }
+        shippingDetails
       );
       toast.success('Added succesfully');
       console.log(response);
     } catch (error) {
-      toast.error(error.message);
-      console.log(error);
+      checkForUnauthorizedResponse(error, removeUser);
     }
     getShippingDetails();
     clearShippingDetails();
@@ -55,19 +52,12 @@ export default function AddShippingForm({ getShippingDetails }) {
     try {
       const response = await customFetch.put(
         `/shippingDetails/${shippingDetails.id}`,
-        shippingDetails,
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
-          },
-        }
+        shippingDetails
       );
       toast.success('Editted succesfully');
       console.log(response);
     } catch (error) {
-      toast.error(error.message);
-      console.log(error);
+      checkForUnauthorizedResponse(error, removeUser);
     }
     getShippingDetails();
     clearShippingDetails();

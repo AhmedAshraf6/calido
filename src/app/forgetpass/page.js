@@ -1,5 +1,9 @@
 'use client';
-import customFetch from '@/util/axios';
+import { useMainContext } from '@/contexts/MainContext';
+import customFetch, {
+  checkForUnauthorizedResponse,
+  customFetchNoUser,
+} from '@/util/axios';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
@@ -9,7 +13,7 @@ export default function ForgetPass() {
   const [mail, setMail] = useState('');
   const [loading, setLoading] = useState(false);
   const router = useRouter();
-
+  const { removeUser } = useMainContext();
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!mail) {
@@ -18,7 +22,7 @@ export default function ForgetPass() {
     }
     try {
       setLoading(true);
-      const response = await customFetch.post(
+      const response = await customFetchNoUser.post(
         '/auth/forgetpassword',
         { mail },
         {
@@ -35,10 +39,8 @@ export default function ForgetPass() {
       );
       const newLink = response?.data?.link.slice(15);
       router.push(`/${newLink}`);
-      // console.log(newLink);
     } catch (error) {
-      toast.error(error.message);
-      console.log(error);
+      checkForUnauthorizedResponse(error, removeUser);
     } finally {
       setLoading(false);
     }

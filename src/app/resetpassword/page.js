@@ -1,8 +1,8 @@
 'use client';
-import customFetch from '@/util/axios';
-import Link from 'next/link';
+import { useMainContext } from '@/contexts/MainContext';
+import customFetch, { checkForUnauthorizedResponse } from '@/util/axios';
 import { useRouter, useSearchParams } from 'next/navigation';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { toast } from 'react-toastify';
 
 export default function ResetPassword() {
@@ -11,6 +11,7 @@ export default function ResetPassword() {
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+  const { removeUser } = useMainContext();
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!password) {
@@ -30,14 +31,12 @@ export default function ResetPassword() {
         }
       );
 
-      console.log(response);
-
       toast.success('Your Password Changed Successfully');
       router.push('/signin');
     } catch (error) {
-      toast.error(error.message);
+      checkForUnauthorizedResponse(error, removeUser);
+
       router.push('/forgetpass');
-      console.log(error);
     } finally {
       setLoading(false);
     }

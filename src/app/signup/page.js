@@ -2,7 +2,10 @@
 import InputField from '@/components/shared-component/InputField';
 import SelectBox from '@/components/shared-component/SelectBox';
 import { useMainContext } from '@/contexts/MainContext';
-import customFetch from '@/util/axios';
+import customFetch, {
+  checkForUnauthorizedResponse,
+  customFetchNoUser,
+} from '@/util/axios';
 import axios from 'axios';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -10,7 +13,7 @@ import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 
 export default function SignUp() {
-  const { AddUser } = useMainContext();
+  const { AddUser, removeUser } = useMainContext();
   // Fetch Countries
   // const fetchUserLocation = async () => {
   //   const res = await axios('https://ipapi.co/json/');
@@ -46,7 +49,7 @@ export default function SignUp() {
     }
     try {
       setLoading(true);
-      const response = await customFetch.post('/auth/signup', data, {
+      const response = await customFetchNoUser.post('/auth/signup', data, {
         headers: {
           'Content-Type': 'application/json',
         },
@@ -55,10 +58,7 @@ export default function SignUp() {
       toast.success('You are member now');
       router.push('/signin');
     } catch (error) {
-      if (error?.response?.status === 400) {
-        toast.error('your  email is alread exist change it');
-      }
-      console.log(error);
+      checkForUnauthorizedResponse(error, removeUser);
     } finally {
       setLoading(false);
     }

@@ -2,14 +2,17 @@
 import React, { useState } from 'react';
 import { StarRating } from '@/components/shared-component/StarRating';
 import Cookies from 'js-cookie';
-import customFetch from '@/util/axios';
+import customFetch, { checkForUnauthorizedResponse } from '@/util/axios';
 import { toast } from 'react-toastify';
+import { useMainContext } from '@/contexts/MainContext';
 
 export default function ReviewForm({ product }) {
   const token = Cookies.get('calidoUser');
+  const { removeUser } = useMainContext();
   const [comment, setComment] = useState('');
   const [rate, setRate] = useState(0);
   const [loading, setLoading] = useState(false);
+
   if (!token) {
     return (
       <h2 className='text-base lg:text-lg font-semibold text-center'>
@@ -25,23 +28,17 @@ export default function ReviewForm({ product }) {
     }
     try {
       setLoading(true);
-      const response = await customFetch.post(
-        '/reviews',
-        { ProductId: product?.id, rate, comment },
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await customFetch.post('/reviews', {
+        ProductId: product?.id,
+        rate,
+        comment,
+      });
       console.log(response);
       setComment('');
       setRate(0);
       toast.success('Your Review Added Successfully');
     } catch (error) {
-      toast.error(error.message);
-      console.log(error);
+      checkForUnauthorizedResponse(error, removeUser);
     } finally {
       setLoading(false);
     }

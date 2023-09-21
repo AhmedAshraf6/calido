@@ -21,7 +21,7 @@ import {
 } from '@/actions/actions';
 import Cookies from 'js-cookie';
 import { toast } from 'react-toastify';
-import customFetch from '@/util/axios';
+import customFetch, { checkForUnauthorizedResponse } from '@/util/axios';
 const MainContext = createContext();
 const intialState = {
   navbar: false,
@@ -55,6 +55,7 @@ export default function MainProvider({ children }) {
     dispatch({ type: ADD_USER, payload: user });
   };
   const removeUser = () => {
+    Cookies.remove('calidoUser');
     dispatch({ type: REMOVE_USER });
   };
   const UpdateUserContext = async () => {
@@ -62,20 +63,14 @@ export default function MainProvider({ children }) {
       return;
     }
     try {
-      const response = await customFetch('/users/me', {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await customFetch('/users/me');
       const newData = {
         ...response?.data?.user,
         phoneNumber: response?.data?.phoneNumber[0],
       };
       AddUser(newData);
     } catch (error) {
-      toast.error('something wrong try again');
-      console.log(error);
+      checkForUnauthorizedResponse(error, removeUser);
     }
   };
   // Shipping Operation

@@ -5,9 +5,13 @@ import Image from 'next/image';
 import { FaStar } from 'react-icons/fa';
 import { BaseUrl } from '@/util/constants';
 import axios from 'axios';
-import customFetch from '@/util/axios';
+import customFetch, {
+  checkForUnauthorizedResponse,
+  customFetchNoUser,
+} from '@/util/axios';
 import { toast } from 'react-toastify';
 import Loading from '../shared-component/Loading';
+import { useMainContext } from '@/contexts/MainContext';
 // async function getReviews(productid) {
 //   const res = await fetch(`${BaseUrl}/reviews?ProductId=${productid}`);
 
@@ -18,17 +22,17 @@ import Loading from '../shared-component/Loading';
 //   return res.json();
 // }
 export default function AllReviews({ productid }) {
-  // const data = await getReviews(productid);
-  // console.log(reviews);
-  // console.log(data);
+  const { removeUser } = useMainContext();
   const getReviews = async () => {
     setLoading(true);
     try {
-      const response = await customFetch(`/reviews?ProductId=${productid}`);
+      const response = await customFetchNoUser(
+        `/reviews?ProductId=${productid}`
+      );
       console.log(response);
       setReviews(response?.data?.results?.rows);
     } catch (error) {
-      toast.error(error?.message);
+      checkForUnauthorizedResponse(error, removeUser);
     } finally {
       setLoading(false);
     }

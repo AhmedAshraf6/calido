@@ -5,14 +5,12 @@ import { BsBorderAll } from 'react-icons/bs';
 import { AiOutlineUser } from 'react-icons/ai';
 import { MdOutlineLocalShipping } from 'react-icons/md';
 import { FiLogOut } from 'react-icons/fi';
-import Cookies from 'js-cookie';
 import { useRouter } from 'next/navigation';
 import { useMainContext } from '@/contexts/MainContext';
 export default function ProfileLinksContainer() {
   const { removeUser } = useMainContext();
   const router = useRouter();
   const logout = () => {
-    Cookies.remove('calidoUser');
     removeUser();
     router.push('/');
   };

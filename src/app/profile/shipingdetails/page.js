@@ -5,28 +5,25 @@ import ProfileLinksContainer from '@/components/profile/ProfileLinksContainer';
 import React, { useState } from 'react';
 import AllShippingDetails from '@/components/profile/AllShippingDetails';
 import AddShippingForm from '@/components/profile/AddShippingForm';
-import customFetch from '@/util/axios';
+import customFetch, { checkForUnauthorizedResponse } from '@/util/axios';
 import { toast } from 'react-toastify';
 import Cookies from 'js-cookie';
 import Loading from '@/components/shared-component/Loading';
+import { useMainContext } from '@/contexts/MainContext';
 
 export default function ShippingDetails() {
   const token = Cookies.get('calidoUser');
-
+  const { removeUser } = useMainContext();
   const [shippingData, setShippingData] = useState([]);
   const [loading, setLoading] = useState(false);
   const getShippingDetails = async () => {
     setLoading(true);
     try {
-      const response = await customFetch('/shippingDetails', {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await customFetch('/shippingDetails');
       setShippingData(response?.data?.results?.rows);
     } catch (error) {
-      toast.error(error.message);
+      checkForUnauthorizedResponse(error, removeUser);
+      // toast.error(error.message);
     } finally {
       setLoading(false);
     }

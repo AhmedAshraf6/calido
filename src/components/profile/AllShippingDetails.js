@@ -1,5 +1,5 @@
 'use client';
-import customFetch from '@/util/axios';
+import customFetch, { checkForUnauthorizedResponse } from '@/util/axios';
 import { BaseUrl } from '@/util/constants';
 import Cookies from 'js-cookie';
 import React, { useEffect, useState } from 'react';
@@ -12,7 +12,7 @@ export default function AllShippingDetails({
   shippingData,
   loading,
 }) {
-  const { editShippingDetails } = useMainContext();
+  const { editShippingDetails, removeUser } = useMainContext();
   const token = Cookies.get('calidoUser');
 
   useEffect(() => {
@@ -20,17 +20,11 @@ export default function AllShippingDetails({
   }, []);
   const deleteShippingDetails = async (id) => {
     try {
-      const response = await customFetch.delete(`/shippingDetails/${id}`, {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await customFetch.delete(`/shippingDetails/${id}`);
       toast.success('Deleted succesfully');
       console.log(response);
     } catch (error) {
-      toast.error(error.message);
-      console.log(error);
+      checkForUnauthorizedResponse(error, removeUser);
     }
     getShippingDetails();
   };

@@ -1,5 +1,8 @@
 'use client';
-import customFetch from '@/util/axios';
+import customFetch, {
+  checkForUnauthorizedResponse,
+  customFetchNoUser,
+} from '@/util/axios';
 import { addUserToLocalStorage } from '@/util/localstorage';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -10,7 +13,7 @@ import { useMainContext } from '@/contexts/MainContext';
 import SignInWithGoogle from '@/components/signinwithgoogle/SignInWithGoogle';
 
 export default function SignIn() {
-  const { AddUser, user } = useMainContext();
+  const { AddUser, user, removeUser } = useMainContext();
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
@@ -28,7 +31,7 @@ export default function SignIn() {
     }
     try {
       setLoading(true);
-      const response = await customFetch.post('/auth/login', data, {
+      const response = await customFetchNoUser.post('/auth/login', data, {
         headers: {
           'Content-Type': 'application/json',
         },
@@ -47,8 +50,7 @@ export default function SignIn() {
       toast.success('Login success');
       router.push('/profile');
     } catch (error) {
-      toast.error(error.message);
-      console.log(error);
+      checkForUnauthorizedResponse(error, removeUser);
     } finally {
       setLoading(false);
     }

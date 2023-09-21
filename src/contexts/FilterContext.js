@@ -10,7 +10,7 @@ import {
   HANDLE_CHANGE_FILTER,
   SHOW_LOADING_FILTER,
 } from '@/actions/actions';
-import customFetch from '@/util/axios';
+import customFetch, { customFetchNoUser } from '@/util/axios';
 import { useMainContext } from './MainContext';
 const FilterContext = createContext();
 const initialFiltersState = {
@@ -58,7 +58,7 @@ export default function FilterProvider({ children }) {
     dispatch({ type: SHOW_LOADING_FILTER });
     try {
       // let url = `/products?sort=${state.sort}&page=${state.page}`;
-      const res = await customFetch.get(
+      const res = await customFetchNoUser.get(
         `/products?order=${state.order}&page=${state.page}`
       );
       dispatch({

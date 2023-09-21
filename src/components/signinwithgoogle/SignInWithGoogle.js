@@ -1,4 +1,4 @@
-import customFetch from '@/util/axios';
+import customFetch, { customFetchNoUser } from '@/util/axios';
 import React, { useEffect } from 'react';
 import { FcGoogle } from 'react-icons/fc';
 import { useSearchParams } from 'next/navigation';
@@ -12,7 +12,7 @@ export default function SignInWithGoogle() {
   const router = useRouter();
   const handleGoogelLogin = async () => {
     try {
-      const response = await customFetch('/auth/google');
+      const response = await customFetchNoUser('/auth/google');
       router.push(response?.data?.url);
     } catch (error) {
       console.log(error);
