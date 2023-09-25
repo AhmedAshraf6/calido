@@ -7,7 +7,7 @@ export default function AddToCartProductComponent({ product }) {
   const { addToCart, cart } = useMainContext();
   const [found, setFound] = useState(false);
   const router = useRouter();
-
+  // we will stop here
   useEffect(() => {
     cart.find((pr) => {
       if (pr.id === product?.id) {
