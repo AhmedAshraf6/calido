@@ -18,6 +18,7 @@ import {
   REMOVE_CART_ITEM,
   TOGGLE_CART_ITEM_AMOUNT,
   COUNT_CART_TOTALS,
+  UPDATE_CART,
 } from '@/actions/actions';
 import Cookies from 'js-cookie';
 import { toast } from 'react-toastify';
@@ -58,6 +59,18 @@ export default function MainProvider({ children }) {
     Cookies.remove('calidoUser');
     dispatch({ type: REMOVE_USER });
   };
+  // Get cart
+  const getCart = async () => {
+    if (!token) {
+      return;
+    }
+    try {
+      const res = await customFetch('/cart');
+      dispatch({ type: UPDATE_CART, payload: res?.data?.cart });
+    } catch (error) {
+      checkForUnauthorizedResponse(error, removeUser);
+    }
+  };
   const UpdateUserContext = async () => {
     if (!token) {
       return;
@@ -94,8 +107,11 @@ export default function MainProvider({ children }) {
   };
 
   useEffect(() => {
-    UpdateUserContext();
-  }, []);
+    if (token) {
+      UpdateUserContext();
+      getCart();
+    }
+  }, [token]);
   useEffect(() => {
     dispatch({ type: COUNT_CART_TOTALS });
   }, [state.cart]);
@@ -114,6 +130,7 @@ export default function MainProvider({ children }) {
         addToCart,
         updateCart,
         removeFromCart,
+        getCart,
       }}
     >
       {children}

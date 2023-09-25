@@ -10,6 +10,7 @@ import {
   REMOVE_CART_ITEM,
   REMOVE_USER,
   TOGGLE_CART_ITEM_AMOUNT,
+  UPDATE_CART,
 } from '@/actions/actions';
 
 export default function MainReducer(state, action) {
@@ -23,7 +24,7 @@ export default function MainReducer(state, action) {
     return { ...state, user: action.payload };
   }
   if (action.type === REMOVE_USER) {
-    return { ...state, user: {} };
+    return { ...state, user: {}, cart: [] };
   }
   // Shipping detail
   if (action.type === CHANGE_SHPPING_DETAIL) {
@@ -122,6 +123,9 @@ export default function MainReducer(state, action) {
       }
     );
     return { ...state, total_items, total_amount };
+  }
+  if (action.type === UPDATE_CART) {
+    return { ...state, cart: action.payload };
   }
   return state;
 }

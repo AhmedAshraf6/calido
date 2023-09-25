@@ -13,7 +13,7 @@ import { useMainContext } from '@/contexts/MainContext';
 import SignInWithGoogle from '@/components/signinwithgoogle/SignInWithGoogle';
 
 export default function SignIn() {
-  const { AddUser, user, removeUser } = useMainContext();
+  const { AddUser, user, removeUser, getCart } = useMainContext();
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
@@ -47,6 +47,7 @@ export default function SignIn() {
       // };
       console.log(response);
       AddUser(response?.data?.user);
+      getCart();
       toast.success('Login success');
       router.push('/profile');
     } catch (error) {

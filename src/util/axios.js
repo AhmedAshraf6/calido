@@ -21,10 +21,10 @@ customFetch.interceptors.request.use((config) => {
 
 export const checkForUnauthorizedResponse = (error, removeUser) => {
   // const { removeUser } = useMainContext();
-  if (error.response.status === 401) {
+  if (error?.response?.status === 401) {
     removeUser();
     return toast.error('Unauthorized! Logging Out...');
   }
-  return toast.error(error.response.data || error.message);
+  return toast.error(error?.response?.data || error?.message);
 };
 export default customFetch;
