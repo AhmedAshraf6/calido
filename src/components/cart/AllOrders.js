@@ -1,11 +1,58 @@
 'use client';
 import Image from 'next/image';
-import React from 'react';
+import React, { useState } from 'react';
 import InputCounter from '../singleitem/InputCounter';
 import { MdDelete } from 'react-icons/md';
 import { useMainContext } from '@/contexts/MainContext';
+import customFetch, { checkForUnauthorizedResponse } from '@/util/axios';
+import { toast } from 'react-toastify';
+import Loading from '../shared-component/Loading';
 export default function AllOrders() {
-  const { cart, updateCart, removeFromCart } = useMainContext();
+  const { cart, removeUser, getCart } = useMainContext();
+  const [loading, setLoading] = useState(false);
+  const [loadingUpdate, setLoadingUpdate] = useState(false);
+  const removeFromCart = async (productid) => {
+    setLoading(true);
+    try {
+      const response = await customFetch.delete(`/cart/${productid}`);
+      toast.success('deleted successfully...');
+      getCart();
+      setLoading(false);
+    } catch (error) {
+      checkForUnauthorizedResponse(error, removeUser);
+      setLoading(false);
+    }
+  };
+  const updateCart = async (productid, quantity, stock, action) => {
+    setLoadingUpdate(true);
+
+    let tempAmount = '';
+    if (action === 'inc') {
+      tempAmount = quantity + 1;
+      if (tempAmount > stock) {
+        toast.success('this package will arrive after 2 months');
+      }
+    }
+    if (action === 'dec') {
+      tempAmount = quantity - 1;
+      if (tempAmount < 1) {
+        tempAmount = 1;
+      }
+    }
+    try {
+      const response = await customFetch.put(`/cart/${productid}`, {
+        quantity: tempAmount,
+      });
+      getCart();
+      setLoadingUpdate(false);
+    } catch (error) {
+      checkForUnauthorizedResponse(error, removeUser);
+      setLoadingUpdate(false);
+    }
+  };
+  if (loading) {
+    return <Loading />;
+  }
   return (
     <section>
       {/* Desktop */}
@@ -28,7 +75,7 @@ export default function AllOrders() {
                     height='150'
                     className='object-contain'
                   />
-                  <span>{product.name}</span>
+                  <span>{product.name_en}</span>
                 </td>
                 {/* <td className='px-4 py-4 col-span-1 sm:col-span-1 md:col-span-1 lg:col-span-1 '>
               <InputCounter />
@@ -37,17 +84,33 @@ export default function AllOrders() {
                   <div className='flex gap-3'>
                     <button
                       className=' text-gray-700 rounded-sm flex justify-center items-center w-5 hover:bg-primary smooth text-lg'
-                      onClick={() => updateCart(product.id, 'dec')}
+                      onClick={() =>
+                        updateCart(
+                          product.id,
+                          product.quantity,
+                          product?.Product?.stock,
+                          'dec'
+                        )
+                      }
+                      disabled={loadingUpdate}
                     >
                       -
                     </button>
 
                     <span className='text-center text-xl '>
-                      {product.amount}
+                      {product.quantity}
                     </span>
                     <button
                       className='  text-gray-700 rounded-sm flex justify-center items-center w-5 hover:bg-primary smooth text-lg'
-                      onClick={() => updateCart(product.id, 'inc')}
+                      onClick={() =>
+                        updateCart(
+                          product.id,
+                          product.quantity,
+                          product?.Product?.stock,
+                          'inc'
+                        )
+                      }
+                      disabled={loadingUpdate}
                     >
                       +
                     </button>
@@ -85,13 +148,20 @@ export default function AllOrders() {
                   className='object-contain'
                 />
                 <div className='flex flex-col gap-3 w-full'>
-                  <span>{product.name}</span>
+                  <span>{product.name_en}</span>
                   <div className='flex justify-between items-center'>
                     <div className='flex gap-2 sm:gap-3 items-center'>
                       <div className='flex items-center gap-4'>
                         <button
                           className=' text-gray-700 rounded-sm flex justify-center items-center w-5 hover:bg-primary smooth text-lg'
-                          onClick={() => updateCart(product.id, 'dec')}
+                          onClick={() =>
+                            updateCart(
+                              product.id,
+                              product.quantity,
+                              product?.stock,
+                              'dec'
+                            )
+                          }
                         >
                           -
                         </button>
@@ -101,7 +171,14 @@ export default function AllOrders() {
                         </span>
                         <button
                           className='  text-gray-700 rounded-sm flex justify-center items-center w-5 hover:bg-primary smooth text-lg'
-                          onClick={() => updateCart(product.id, 'inc')}
+                          onClick={() =>
+                            updateCart(
+                              product.id,
+                              product.quantity,
+                              product?.stock,
+                              'dec'
+                            )
+                          }
                         >
                           +
                         </button>

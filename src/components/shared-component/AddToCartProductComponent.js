@@ -1,32 +1,48 @@
 'use client';
-import { useMainContext } from '@/contexts/MainContext';
-import { useAddProductToCart } from '@/util/useRepeatedFunction';
 
-import Cookies from 'js-cookie';
-import { useRouter } from 'next/navigation';
-import React, { useEffect, useState } from 'react';
+import { useMainContext } from '@/contexts/MainContext';
+import customFetch, { checkForUnauthorizedResponse } from '@/util/axios';
+import React, { useState } from 'react';
+import { toast } from 'react-toastify';
 
 export default function AddToCartProductComponent({ product }) {
-  const { addToCart, cart, removeUser, getCart } = useMainContext();
-  const token = Cookies.get('calidoUser');
-  const router = useRouter();
-  const [found, setFound] = useState(false);
-  // we will stop here
-  useEffect(() => {
-    if (cart.length > 0) {
-      cart.find((pr) => {
-        if (pr.id === product?.id) {
-          setFound(true);
-        }
-      });
+  const { getCart, cart } = useMainContext();
+  const [loadingUpdate, setLoadingUpdate] = useState(false);
+
+  const addToCart = async (productid, quantity, stock) => {
+    setLoadingUpdate(true);
+
+    let tempAmount = quantity;
+    if (tempAmount > stock) {
+      toast.success('this package will arrive after 2 months');
+    } else if (tempAmount < 1) {
+      tempAmount = 1;
     }
-  }, [cart]);
-  const { addPr } = useAddProductToCart();
+
+    const findProduct = cart.find((prod) => prod?.Product.id === productid);
+    if (findProduct) {
+      toast.error('alread in cart');
+    } else {
+      try {
+        await customFetch.post('/cart', {
+          product: productid,
+          quantity: tempAmount,
+        });
+        getCart();
+        toast.success('added successfully...');
+        setLoadingUpdate(false);
+      } catch (error) {
+        checkForUnauthorizedResponse(error, removeUser);
+        setLoadingUpdate(false);
+      }
+    }
+  };
 
   return (
     <button
       className={` btn-primary mx-2 mb-5`}
-      onClick={() => addPr({ product, found })}
+      onClick={() => addToCart(product?.id, 1, product?.stock)}
+      disabled={loadingUpdate}
     >
       {/* {found ? 'view cart' : ' Add to cart'} */}
       Add To Cart

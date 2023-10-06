@@ -66,7 +66,15 @@ export default function MainProvider({ children }) {
     }
     try {
       const res = await customFetch('/cart');
-      dispatch({ type: UPDATE_CART, payload: res?.data?.cart });
+      const tempData = res?.data?.cart.map((item) => {
+        return {
+          ...item,
+          name_en: item?.Product?.name_en,
+          price: item?.Product?.price,
+        };
+      });
+      console.log(tempData);
+      dispatch({ type: UPDATE_CART, payload: tempData });
     } catch (error) {
       checkForUnauthorizedResponse(error, removeUser);
     }

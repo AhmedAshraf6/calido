@@ -111,10 +111,10 @@ export default function MainReducer(state, action) {
   if (action.type === COUNT_CART_TOTALS) {
     const { total_items, total_amount } = state.cart.reduce(
       (total, cartItem) => {
-        const { amount, price } = cartItem;
+        const { quantity, price } = cartItem;
 
-        total.total_items += amount;
-        total.total_amount += price * amount;
+        total.total_items += quantity;
+        total.total_amount += price * quantity;
         return total;
       },
       {
