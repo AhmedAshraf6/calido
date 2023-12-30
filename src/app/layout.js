@@ -11,6 +11,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import SearchInput from '@/components/shared-component/navbar/SearchInput';
 import FilterProvider from '@/contexts/FilterContext';
 import ReponsiveFilter from '@/components/shop/ReponsiveFilter';
+import ReactQueryProvider from '@/util/ReactQueryProvider';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata = {
@@ -22,25 +23,27 @@ export default function RootLayout({ children }) {
   return (
     <html lang='en'>
       <body className={inter.className}>
-        <MainProvider>
-          <FilterProvider>
-            <TopNavbar />
-            <div className='container my-3 lg:hidden'>
-              <SearchInput />
-            </div>
-            <Navbar />
-            {/* Responsive Navbar */}
-            <div>
-              <AsideNavbar />
-            </div>
-            <div>
-              <ReponsiveFilter />
-            </div>
-            {children}
-            <Footer />
-            <ToastContainer position='top-center' />
-          </FilterProvider>
-        </MainProvider>
+        <ReactQueryProvider>
+          <MainProvider>
+            <FilterProvider>
+              <TopNavbar />
+              <div className='container my-3 lg:hidden'>
+                <SearchInput />
+              </div>
+              <Navbar />
+              {/* Responsive Navbar */}
+              <div>
+                <AsideNavbar />
+              </div>
+              <div>
+                <ReponsiveFilter />
+              </div>
+              {children}
+              <Footer />
+              <ToastContainer position='top-center' />
+            </FilterProvider>
+          </MainProvider>
+        </ReactQueryProvider>
       </body>
     </html>
   );

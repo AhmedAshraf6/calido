@@ -1,5 +1,6 @@
 'use client';
 import { useMainContext } from '@/contexts/MainContext';
+import Link from 'next/link';
 import React from 'react';
 
 export default function InfoAboutOrders() {
@@ -23,9 +24,9 @@ export default function InfoAboutOrders() {
           {total_amount.toFixed(2)} Egp
         </span>
       </div>
-      <button className='btn-primary w-full mt-4 sm:mt-6'>
+      <Link className='btn-primary w-full mt-4 sm:mt-6' href='checkout'>
         proceed to checkout
-      </button>
+      </Link>
     </section>
   );
 }

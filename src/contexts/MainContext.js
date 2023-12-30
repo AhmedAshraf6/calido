@@ -73,7 +73,6 @@ export default function MainProvider({ children }) {
           price: item?.Product?.price,
         };
       });
-      console.log(tempData);
       dispatch({ type: UPDATE_CART, payload: tempData });
     } catch (error) {
       checkForUnauthorizedResponse(error, removeUser);
