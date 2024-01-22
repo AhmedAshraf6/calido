@@ -17,5 +17,6 @@ export default function Checkout() {
       checkForUnauthorizedResponse(error, removeUser);
     },
   });
+
   return <div>page</div>;
 }
