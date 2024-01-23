@@ -5,9 +5,24 @@ import HeroLandingWithoutImage from '@/components/shared-component/HeroLandingWi
 import { useMainContext } from '@/contexts/MainContext';
 import Link from 'next/link';
 import React from 'react';
+import customFetch, { checkForUnauthorizedResponse } from '@/util/axios';
+import { useQuery } from '@tanstack/react-query';
 
 export default function Cart() {
   const { total_amount } = useMainContext();
+  const { removeUser } = useMainContext();
+  const { data } = useQuery({
+    queryKey: ['shippingMethods'],
+    queryFn: async () => {
+      const { data } = await customFetch('/shippingmethods/order');
+
+      return data;
+    },
+    onError: (error) => {
+      checkForUnauthorizedResponse(error, removeUser);
+    },
+  });
+
   return (
     <div className='min-h-[40vh]'>
       {!total_amount ? (
@@ -29,7 +44,7 @@ export default function Cart() {
                 </div>
                 <div className='col-span-3 lg:col-span-1'>
                   {/* Info about all orders */}
-                  <InfoAboutOrders />
+                  <InfoAboutOrders data={data} />
                 </div>
               </div>
             </div>

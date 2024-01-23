@@ -64,9 +64,9 @@ body {
   /* height: 3000px; */
   overflow-x: hidden;
 }
-input[type='radio'] {
+/* input[type='radio'] {
   display: none;
-}
+} */
 .sale-image {
   background-image: url('../../public/sale.jpg');
 }
