@@ -21,7 +21,7 @@ export const StarRating = ({ rate, setRate }) => {
             <FaStar
               className={`text-xl star cursor-pointer ${
                 ratingValue <= (hover || rate)
-                  ? 'text-primary'
+                  ? 'text-[#FDC001]'
                   : 'text-[#e4e5e9]'
               }`}
               onMouseOver={() => setHover(() => ratingValue)}
