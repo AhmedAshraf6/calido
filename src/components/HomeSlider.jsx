@@ -93,13 +93,7 @@ const HomeSlider = () => {
               >
                 <div className='group-hover:bg-black/50 overlay absolute bottom-0 w-full h-full left-0 transition-all duration-700'></div>
                 <div className='absolute bottom-0 -left-[90%] group-hover:left-0 flex  transition-all   duration-700 cursor-pointer'>
-                  <div className='w-full h-full bg-base-content p-3'>
-                    <div className='bg-white  rounded-full w-12  cursor-pointer  transition-all duration-200 '>
-                      <div className='text-2xl'>
-                        <HiOutlineArrowTrendingUp />
-                      </div>
-                    </div>
-                  </div>
+           
                   <div className='px-4 flex flex-col items-start justify-center bg-white'>
                     <span className='text-xs text-base-content'>
                       {slide.title}
