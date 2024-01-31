@@ -5,7 +5,7 @@ import { toast } from 'react-toastify';
 import { GoogleAuthProvider, getAuth, signInWithPopup } from 'firebase/auth';
 import { app } from '@/app/firbase';
 import { useMutation } from '@tanstack/react-query';
-import customFetch, { checkForUnauthorizedResponse } from '@/utils/axios';
+import customFetch, { checkForUnauthorizedResponse } from '@/util/axios';
 import Cookies from 'js-cookie';
 import { useRouter } from 'next/navigation';
 export default function SignInWithGoogle() {
@@ -29,7 +29,8 @@ export default function SignInWithGoogle() {
     onError: (error) => {
       checkForUnauthorizedResponse(error, dispatch);
     },
-  });س
+  });
+
   const handleGoogleClick = async () => {
     try {
       const provider = new GoogleAuthProvider();
