@@ -20,7 +20,7 @@ export default function TopNavbar() {
   }, []);
   return (
     <>
-      <nav className='py-5 lg:py-10 px-5 lg:px-8 '>
+      <nav className='py-5 lg:py-6 px-5 lg:px-8 '>
         <div className='grid grid-cols-5 place-items-center'>
           <div className='hidden lg:flex items-center gap-5  col-span-1'>
             <FaFacebook className='cursor-pointer hover:text-primary smooth text-lg' />

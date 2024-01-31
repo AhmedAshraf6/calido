@@ -1,42 +1,54 @@
-import customFetch, { customFetchNoUser } from '@/util/axios';
+'use client';
 import React, { useEffect } from 'react';
 import { FcGoogle } from 'react-icons/fc';
-import { useSearchParams } from 'next/navigation';
-import { useRouter } from 'next/navigation';
-import Cookies from 'js-cookie';
 import { toast } from 'react-toastify';
-
+import { GoogleAuthProvider, getAuth, signInWithPopup } from 'firebase/auth';
+import { app } from '@/app/firbase';
+import { useMutation } from '@tanstack/react-query';
+import customFetch, { checkForUnauthorizedResponse } from '@/utils/axios';
+import Cookies from 'js-cookie';
+import { useRouter } from 'next/navigation';
 export default function SignInWithGoogle() {
-  const searchParams = useSearchParams();
-  const tokenFromSearch = searchParams.get('token');
   const router = useRouter();
-  const handleGoogelLogin = async () => {
-    try {
-      const response = await customFetchNoUser('/auth/google');
-      router.push(response?.data?.url);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  useEffect(() => {
-    if (tokenFromSearch) {
-      Cookies.set('calidoUser', tokenFromSearch, {
+  const { isLoading, mutate } = useMutation({
+    mutationFn: async ({ displayName, email, photoURL }) => {
+      const { data } = await customFetch.post('/auth/google', {
+        displayName,
+        email,
+        photoURL,
+      });
+      return data;
+    },
+    onSuccess: (data) => {
+      Cookies.set('token', data.token, {
         expires: 1,
         secure: true,
       });
-      //  AddUser(response?.data?.user);
-      toast.success('Login success');
       router.push('/');
+    },
+    onError: (error) => {
+      checkForUnauthorizedResponse(error, dispatch);
+    },
+  });س
+  const handleGoogleClick = async () => {
+    try {
+      const provider = new GoogleAuthProvider();
+      const auth = getAuth(app);
+      const result = await signInWithPopup(auth, provider);
+      const { displayName, email, photoURL } = result.user;
+      mutate({ displayName, email, photoURL });
+    } catch (error) {
+      toast.error(error);
     }
-  }, [tokenFromSearch]);
+  };
   return (
     <button
-      className='btn-danger flex w-full items-center mt-5 gap-3 justify-center'
       type='button'
-      onClick={handleGoogelLogin}
+      onClick={handleGoogleClick}
+      className='btn btn-error text-error-content text-xs sm:text-base h-full btn-sm sm:btn-md mt-4 sm:mt-6 capitalize font-bold w-full flex flex-wrap'
     >
-      <FcGoogle className='text-center' />
-      Continue With Google
+      <span> متابعة باستخدام جوجل</span>
+      <FcGoogle />
     </button>
   );
 }

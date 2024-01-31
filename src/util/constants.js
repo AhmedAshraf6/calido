@@ -15,6 +15,11 @@ export const navLiks = [
     link: '/shop',
   },
   {
+    id: '5',
+    title: 'Our Success Story',
+    link: '/sucess-story',
+  },
+  {
     id: '4',
     title: 'Contact',
     link: '/contact',
