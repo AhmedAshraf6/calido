@@ -5,6 +5,9 @@ import Sale from '@/components/home/Sale';
 import Product from '@/components/shared-component/Product';
 import { BaseUrl } from '@/util/constants';
 import { toast } from 'react-toastify';
+import WebsiteSection from '@/components/WebsiteSection';
+import WebsiteSection2 from '@/components/WebsiteSection2';
+import HomeSlider from '@/components/HomeSlider';
 // import geoip from 'geoip-lite';
 async function getData() {
   const res = await fetch(`${BaseUrl}/products`);
@@ -40,7 +43,9 @@ export default async function Home() {
   return (
     <div>
       <Slider />
-
+      <WebsiteSection />
+      <WebsiteSection2 />
+      <HomeSlider />
       {/* Featured Product */}
       {/* <div className='mt-8 sm:mt-24'>
         <div className='container '>
