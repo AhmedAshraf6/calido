@@ -20,9 +20,9 @@ export default function TopNavbar() {
   }, []);
   return (
     <>
-      <nav className='py-5 lg:py-6 px-5 lg:px-8 '>
-        <div className='grid grid-cols-5 place-items-center'>
-          <div className='hidden lg:flex items-center gap-5  col-span-1'>
+      <nav className='py-5 lg:py-6 px-5 lg:px-8 container'>
+        <div className=' flex justify-between items-center'>
+          <div className='hidden lg:flex items-center gap-5 '>
             <FaFacebook className='cursor-pointer hover:text-primary smooth text-lg' />
             <AiOutlineTwitter className='cursor-pointer hover:text-primary smooth text-lg' />
             <AiFillInstagram className='cursor-pointer hover:text-primary smooth text-lg' />
@@ -32,7 +32,7 @@ export default function TopNavbar() {
             onClick={() => detectNavbar(true)}
           />
 
-          <Link href='/' className='col-span-3 lg:col-span-2 '>
+          <Link href='/' className=''>
             <Image
               src='/logo.png'
               width={60}
@@ -42,7 +42,7 @@ export default function TopNavbar() {
             />
           </Link>
 
-          <div className='flex items-center gap-5 col-span-1 lg:col-span-2  '>
+          <div className='flex items-center gap-5 '>
             <div className='hidden lg:block'>
               <SearchInput />
             </div>

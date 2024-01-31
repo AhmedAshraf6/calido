@@ -5,6 +5,7 @@ import { StarRating } from '@/components/shared-component/StarRating';
 import { FaStar } from 'react-icons/fa';
 import { useMainContext } from '@/contexts/MainContext';
 import AddToCartProductComponent from './AddToCartProductComponent';
+import { domain } from '@/util/axios';
 export default function Product({
   name_en,
   id,
@@ -13,11 +14,12 @@ export default function Product({
   sale,
   product,
 }) {
+  console.log(product);
   return (
     <div className='cursor-pointer  sm:hover:shadow-slate-400 sm:shadow-md rounded-lg sm:border sm:border-gray-200 transition-shadow duration-200 group flex flex-col items-start relative'>
       <Link href={`/singleitem/${id}`} aria-label='redirect to shop page'>
         <Image
-          src='/image-2.png'
+          src={`${domain + product?.images?.length>0 && product?.images[0].name}`}
           width={500}
           height={500}
           style={{

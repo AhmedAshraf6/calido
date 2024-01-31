@@ -16,7 +16,7 @@ export const navLiks = [
   },
   {
     id: '5',
-    title: 'Our Success Story',
+    title: 'Success Story',
     link: '/sucess-story',
   },
   {

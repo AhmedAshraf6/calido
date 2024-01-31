@@ -7,6 +7,7 @@ import { toast } from 'react-toastify';
 const customFetch = axios.create({
   baseURL: 'https://calido.onrender.com/api/v1',
 });
+export const domain ='https://calido.onrender.com/api/v1/';
 export const customFetchNoUser = axios.create({
   baseURL: 'https://calido.onrender.com/api/v1',
 });
